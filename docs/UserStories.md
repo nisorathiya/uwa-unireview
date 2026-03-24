@@ -13,7 +13,7 @@ As a new student, I can register with my name, student email, and password so th
 ---
 
 **US-02 — Log in**
-As a registered student, I can log in with my email and password so that I can access the UniReview content.
+As a registered student, I can log in with my student email and password so that I can access my personalised content.
 
 - A session is created on successful login
 - Invalid credentials display an error message without revealing which field is wrong
@@ -33,7 +33,7 @@ As a logged-in student, I can log out so that my session is securely ended.
 ## Browsing & Discovery
 
 **US-04 — Search for a unit**
-As a user, I can search for a unit by name or unit code so that I can quickly find the unit I am looking for.
+As any student visitor, I can search for a unit by name or unit code so that I can quickly find the unit I am looking for.
 
 - Search results update without a full page reload (AJAX)
 - Matches on partial unit code or name
@@ -42,15 +42,16 @@ As a user, I can search for a unit by name or unit code so that I can quickly fi
 ---
 
 **US-05 — Filter by faculty**
-As a user, I can filter units by faculty so that I can narrow results to my area of study.
+As any student visitor, I can filter units by faculty so that I can narrow results to my area of study.
 
 - Faculty filter pills are available on the homepage
 - Selecting a faculty filters the unit grid client-side without a page reload
+- An "All" option resets the filter to show every unit
 
 ---
 
 **US-06 — View a unit detail page**
-As a user, I can click on a unit card to view its full detail page so that I can read reviews and scores or search and click on the .
+As any student visitor, I can click on a unit card to view its full detail page so that I can read reviews and scores.
 
 - Unit detail page loads with all aggregated scores and score bars
 - All student reviews are displayed on the page
@@ -69,8 +70,8 @@ As a logged-in student, I can submit a review for a unit with ratings across fou
 
 ---
 
-**US-08 — Read other students reviews**
-As any visitor, I can read all reviews for a unit written by other students so that I can make an informed enrolment decision.
+**US-08 — Read other students' reviews**
+As any student visitor, I can read all reviews for a unit written by other students so that I can make an informed enrolment decision.
 
 - Reviews are displayed in order of helpful votes by default
 - Each review shows the reviewer's username, semester taken, all four dimension scores, and comment text

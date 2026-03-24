@@ -46,12 +46,6 @@ A public profile showing the user's bio, stats, and all reviews they have writte
 
 ## Page 6 — Forum Thread Page
 
-A dedicated page for a single forum thread tied to a specific unit. The left 
-side shows the original post followed by all replies in chronological order, 
-each displaying the user's avatar, username, timestamp, and message. A reply 
-box at the bottom allows logged-in users to contribute to the discussion. The 
-right sidebar shows the unit's basic info and a list of other active threads 
-in the same unit, making it easy to navigate between discussions without 
-going back to the unit page.
+A dedicated page for a single forum thread tied to a specific unit. 
 
 ![Page 6 - Forum Thread Page](wireframes-img/page06.png)

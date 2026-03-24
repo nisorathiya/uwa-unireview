@@ -4,7 +4,7 @@ A sketch of the proposed pages for our web application.
 
 ---
 
-## Page 1 — Landing / Login / Signup
+## Page 1 — Login / Signup
 
 The entry point of the app. Users can log in or create an account. A hero banner introduces the purpose of the site.
 

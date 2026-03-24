@@ -8,7 +8,7 @@ A sketch of the proposed pages for our web application.
 
 The entry point of the app. Users can log in or create an account. A hero banner introduces the purpose of the site.
 
-![Page 1 - Landing / Login / Signup](wireframes-img/page01.png)
+![Page 1 - Login / Signup](wireframes-img/page01.png)
 
 ---
 

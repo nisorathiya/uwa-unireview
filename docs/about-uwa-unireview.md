@@ -42,7 +42,7 @@ The platform addresses a genuine gap: prospective students currently have no rel
 | 2 | Dashboard (unit browse) | `/` | Homepage. Hero search bar with AJAX live filtering. Faculty filter pills. Unit cards showing aggregated scores colour-coded by rating level. Sorted by highest overall rating by default. |
 | 3 | Unit detail page | `/unit/<id>` | Individual unit page. Shows score cards and visual score bars across all four dimensions. Review submission form with star rating widget. Paginated list of all student reviews with helpful vote buttons and Message Student action. |
 | 4 | Student profile | `/profile` | Personal dashboard. Avatar, name, and stats (reviews written, helpful votes received, messages). Two tabs: My Reviews (with edit/delete) and Saved Units. Login required. |
-| 5 | Student forum | `/messages` | A question forum interface. Lists all current questions with the student names and any reply if already answered. Right panel shows full message thread with the selected student, anchored to the unit context that started the conversation. |
+| 5 | Student forum | `/forum` | A question forum interface. Lists all current questions with the student names and any reply if already answered. Right panel shows full message thread with the selected student, anchored to the unit context that started the conversation. |
 
 ---
 

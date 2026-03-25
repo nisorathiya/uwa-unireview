@@ -2,7 +2,7 @@
 
 ## Purpose
 
-UWA UniReview is a community-driven web platform that allows University of Western Australia students to read and submit honest, structured reviews of units they have studied. Students can search and filter units by faculty or code, view aggregated rating scores across four dimensions (overall experience, workload, difficulty, and usefulness), and directly message other students whose reviews they found helpful.
+UWA UniReview is a community-driven web platform that allows University of Western Australia students to read and submit honest, structured reviews of units they have studied. Students can search and filter units by faculty or code, view aggregated rating scores across four dimensions (overall experience, workload, difficulty, and usefulness), and drop a question for other students if they have further questions to know about a specific unit.
 
 The platform addresses a genuine gap: prospective students currently have no reliable, peer-sourced way to evaluate units before enrolling. UniReview fills that gap with data from the people who matter most — students who have actually taken the unit.
 

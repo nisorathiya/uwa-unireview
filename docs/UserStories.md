@@ -1,187 +1,206 @@
 # UWA UniReview — User Stories
 
-Three roles interact with the platform: a **Guest** (not logged in), a **Student** (registered and logged in), and an **Admin** (manages the platform). Stories are grouped by role, reflecting what each type of user can actually do.
+---
+
+**Title:** User Registration
+**User Story:** As a new student, I want to register with my name, email and password so that I can create an account and access the platform.
+**Acceptance Criteria:**
+
+- **Scenario 1:** Valid UWA email provided.
+  - **Given** I am on the registration page
+  - **When** I enter my name, a valid UWA student email and a password and click Sign up
+  - **Then** my account is created and I am redirected to the dashboard
+
+- **Scenario 2:** Email is already registered.
+  - **Given** I am on the registration page
+  - **When** I enter an email address that is already associated with an existing account
+  - **Then** I receive an error message informing me that the email is already in use
+
+- **Scenario 3:** Non-UWA email provided.
+  - **Given** I am on the registration page
+  - **When** I enter an email address that does not end in @student.uwa.edu.au
+  - **Then** I receive an error message requesting that I use my UWA student email address
 
 ---
 
-## Role 1 — Guest
+**Title:** User Login
+**User Story:** As a registered student, I want to log in with my email and password so that I can access my account and use the platform.
+**Acceptance Criteria:**
 
-> A guest is anyone who visits the site without an account or without being logged in. They can browse and read content but cannot contribute.
+- **Scenario 1:** Correct credentials entered.
+  - **Given** I am on the login page
+  - **When** I enter my registered email address and correct password and click Log in
+  - **Then** I am authenticated and redirected to the dashboard
 
----
-
-**US-01 — Register for an account**
-As a guest, I want to register with my name, email, and password so that I can become a student member and access the full platform.
-
-- Email must end in `@student.uwa.edu.au`
-- Password is hashed before storage — never stored in plain text
-- Duplicate emails are rejected with a clear error message
-- Redirects to the dashboard on successful registration
-
----
-
-**US-02 — Log in**
-As a guest, I want to log in with my email and password so that I can access my personalised content and contribute to the platform.
-
-- A session is created on successful login
-- Invalid credentials display an error message without revealing which field is wrong
-- Redirects to the originally intended page after login
+- **Scenario 2:** Incorrect credentials entered.
+  - **Given** I am on the login page
+  - **When** I enter an incorrect email address or password
+  - **Then** I receive an error message indicating that my credentials are invalid
 
 ---
 
-**US-03 — Search for a unit**
-As a guest, I want to search for a unit by name or unit code so that I can quickly find the unit I am looking for without browsing the full list.
+**Title:** User Logout
+**User Story:** As a logged-in student, I want to log out of my account so that my session is securely terminated when I am finished using the platform.
+**Acceptance Criteria:**
 
-- Search results update without a full page reload (AJAX)
-- Matches on partial unit code or name
-- Results show unit code, name, faculty, and overall score
+- **Scenario 1:** Student logs out successfully.
+  - **Given** I am logged in and viewing any page
+  - **When** I click the Log out button in the navigation bar
+  - **Then** my session is ended and I am redirected to the homepage
 
----
-
-**US-04 — Filter units by faculty**
-As a guest, I want to filter units by faculty so that I can narrow results to my area of study.
-
-- Faculty filter pills are available on the homepage
-- Selecting a faculty filters the unit grid client-side without a page reload
-- An "All" option resets the filter to show every unit
+- **Scenario 2:** Accessing a protected page after logout.
+  - **Given** I have logged out of my account
+  - **When** I attempt to navigate to a protected page such as my profile
+  - **Then** I am redirected to the login page
 
 ---
 
-**US-05 — View a unit detail page**
-As a guest, I want to view a unit's detail page so that I can read its aggregated scores and student reviews before deciding to enrol.
+**Title:** Search and Filter Units
+**User Story:** As a student, I want to search for a unit by name or code and filter by faculty so that I can locate a specific unit efficiently.
+**Acceptance Criteria:**
 
-- Unit detail page loads with all aggregated scores and score bars across four dimensions
-- All student reviews are displayed on the page
-- Accessible without being logged in
+- **Scenario 1:** Searching by unit name.
+  - **Given** I am on the dashboard
+  - **When** I type a unit name into the search bar
+  - **Then** the unit grid updates immediately to display only matching results without a full page reload
 
----
+- **Scenario 2:** Searching by unit code.
+  - **Given** I am on the dashboard
+  - **When** I enter a unit code such as CITS3403 into the search bar
+  - **Then** only units matching that code are displayed
 
-**US-06 — Read other students' reviews**
-As a guest, I want to read all reviews for a unit so that I can make an informed enrolment decision based on real student experiences.
+- **Scenario 3:** Filtering by faculty.
+  - **Given** I am on the dashboard
+  - **When** I select a faculty filter such as Engineering and Computing
+  - **Then** the unit grid displays only units belonging to that faculty
 
-- Reviews are displayed in order of helpful votes by default
-- Each review shows the reviewer's username, semester taken, all four dimension scores, and comment text
-- Accessible without being logged in
-
----
-
-**US-07 — Browse the unit forum**
-As a guest, I want to read forum posts and replies for a unit so that I can see what students are currently discussing about it.
-
-- Forum thread is visible on the unit detail page below the reviews section
-- Posts are displayed in chronological order with the newest at the top
-- Each post shows the author's username, timestamp, and post content
-- Accessible without being logged in
+- **Scenario 4:** No matching results found.
+  - **Given** I am on the dashboard
+  - **When** I enter a search term that does not match any unit
+  - **Then** a message is displayed informing me that no units were found
 
 ---
 
-## Role 2 — Student
+**Title:** View Unit Detail Page
+**User Story:** As a student, I want to view a unit's detail page so that I can review its aggregated scores and student reviews before making an enrolment decision.
+**Acceptance Criteria:**
 
-> A student is a registered user who is logged in. They can do everything a guest can do, plus contribute reviews, vote, post in the forum, and manage their profile.
+- **Scenario 1:** Viewing a unit with existing reviews.
+  - **Given** I am on the dashboard
+  - **When** I click on a unit card
+  - **Then** I am taken to that unit's detail page displaying aggregated scores and all submitted reviews
 
----
+- **Scenario 2:** Viewing a unit with no reviews.
+  - **Given** I click on a unit that has not yet received any reviews
+  - **When** the unit detail page loads
+  - **Then** a message is displayed informing me that no reviews have been submitted yet
 
-**US-08 — Log out**
-As a student, I want to log out so that my session is securely ended and my account is protected.
-
-- Session is fully cleared on logout
-- Redirected to the homepage
-- All protected routes become inaccessible after logging out
-
----
-
-**US-09 — Submit a review**
-As a student, I want to submit a review for a unit with ratings across four dimensions so that other students can benefit from my honest experience.
-
-- Star rating widget covers overall, workload, difficulty, and usefulness
-- A text comment is required before submission
-- Only one review per student per unit is allowed, enforced by a database constraint
+- **Scenario 3:** Viewing as an unauthenticated user.
+  - **Given** I am not logged in
+  - **When** I navigate to a unit detail page
+  - **Then** I can view all scores and reviews without being required to log in
 
 ---
 
-**US-10 — Edit or delete my own review**
-As a student, I want to edit or delete my own review so that I can keep my feedback accurate and up to date over time.
+**Title:** Submit a Review
+**User Story:** As a logged-in student, I want to submit a review for a unit so that other students can benefit from my experience when considering enrolment.
+**Acceptance Criteria:**
 
-- Edit and delete buttons are visible only on my own reviews
-- Ownership is verified server-side — not just on the frontend
-- Deletion requires a confirmation step to prevent accidental removal
+- **Scenario 1:** Successfully submitting a review.
+  - **Given** I am logged in and viewing a unit page for which I have not previously submitted a review
+  - **When** I provide star ratings for all four dimensions, write a comment and click Submit
+  - **Then** my review is saved and displayed on the unit page immediately
 
----
+- **Scenario 2:** Submitting without a comment.
+  - **Given** I am completing the review form
+  - **When** I provide star ratings but leave the comment field empty and click Submit
+  - **Then** I receive a validation error requesting that I write a comment before submitting
 
-**US-11 — Upvote a helpful review**
-As a student, I want to upvote a review I found helpful so that the most useful reviews rise to the top for other students.
-
-- One vote per student per review is enforced
-- The vote count updates without a page reload via AJAX
-- The vote count is displayed clearly on each review card
-
----
-
-**US-12 — Post in the unit forum**
-As a student, I want to post a question or comment in a unit's forum so that I can start a discussion with other students about that unit.
-
-- A text input and submit button are available on the unit detail page forum section
-- Post appears immediately in the thread after submission without a full page reload
-- Post is tied to the student's account and displays their username and timestamp
-- Login is required to post — guests see a "log in to post" prompt instead
+- **Scenario 3:** Attempting to review a unit twice.
+  - **Given** I have already submitted a review for a unit
+  - **When** I visit that unit's page again
+  - **Then** the review submission form is not displayed and I am informed that I have already reviewed this unit
 
 ---
 
-**US-13 — Reply to a forum post**
-As a student, I want to reply to another student's forum post so that I can answer their question or continue the discussion.
+**Title:** Edit or Delete a Review
+**User Story:** As a logged-in student, I want to edit or delete my own review so that I can ensure my feedback remains accurate and up to date.
+**Acceptance Criteria:**
 
-- Each forum post has a reply button that opens an inline reply input
-- Replies are nested under the original post
-- Reply displays the student's username and timestamp
-- Login is required to reply
+- **Scenario 1:** Editing an existing review.
+  - **Given** I am logged in and viewing one of my own reviews
+  - **When** I click Edit, modify the content and save my changes
+  - **Then** my review is updated and the revised content is displayed on the unit page
 
----
+- **Scenario 2:** Deleting an existing review.
+  - **Given** I am logged in and viewing one of my own reviews
+  - **When** I click Delete and confirm the action
+  - **Then** my review is permanently removed from the unit page
 
-**US-14 — Delete my own forum post**
-As a student, I want to delete my own forum post or reply so that I can remove something I posted by mistake.
-
-- Delete button is visible only on my own posts and replies
-- Ownership is verified server-side
-- Deletion requires a confirmation step
-
----
-
-**US-15 — View my profile**
-As a student, I want to view my profile page so that I can see all the reviews and forum posts I have written and track my contributions.
-
-- Profile shows my avatar/initials, stats (reviews written, votes received, forum posts)
-- Tabbed view between My Reviews and My Forum Posts
-- Unauthenticated users are redirected to the login page
+- **Scenario 3:** Attempting to edit another student's review.
+  - **Given** I am logged in and viewing another student's review
+  - **When** I view that review
+  - **Then** no Edit or Delete buttons are displayed for that review
 
 ---
 
-## Role 3 — Admin
+**Title:** Mark a Review as Helpful
+**User Story:** As a logged-in student, I want to upvote a review I found useful so that the most helpful reviews are prioritised for other students.
+**Acceptance Criteria:**
 
-> An admin is a trusted platform manager who maintains the quality and integrity of the platform. Admin features are planned for a future sprint.
+- **Scenario 1:** Upvoting a review.
+  - **Given** I am logged in and reading a review that I did not author
+  - **When** I click the upvote button
+  - **Then** the vote count increments by one immediately without a full page reload
 
----
+- **Scenario 2:** Removing an upvote.
+  - **Given** I have previously upvoted a review
+  - **When** I click the upvote button again
+  - **Then** my vote is withdrawn and the count decrements accordingly
 
-**US-16 — Remove an inappropriate review**
-As an admin, I want to delete any review that violates community guidelines so that the platform remains trustworthy and respectful.
-
-- Admin can delete any review regardless of who wrote it
-- Deleted reviews are removed from the unit page immediately
-- Action is logged for audit purposes
-
----
-
-**US-17 — Remove an inappropriate forum post**
-As an admin, I want to delete any forum post or reply that violates community guidelines so that discussions remain constructive and on-topic.
-
-- Admin can delete any post or reply regardless of who wrote it
-- Deleted posts are removed from the thread immediately
-- Action is logged for audit purposes
+- **Scenario 3:** Attempting to upvote an own review.
+  - **Given** I am logged in and viewing a review I authored
+  - **When** I view the upvote button
+  - **Then** the button is disabled and I am unable to vote on my own review
 
 ---
 
-**US-18 — Add a new unit to the directory**
-As an admin, I want to add new units to the platform so that the unit directory stays current with UWA's course offerings.
+**Title:** Save a Unit
+**User Story:** As a logged-in student, I want to save units I am interested in so that I can revisit them easily from my profile page.
+**Acceptance Criteria:**
 
-- Admin can create a new unit with code, name, faculty, and credit points
-- New unit appears immediately on the dashboard
-- Duplicate unit codes are rejected
+- **Scenario 1:** Saving a unit.
+  - **Given** I am logged in and viewing a unit card or unit detail page
+  - **When** I click the Save button
+  - **Then** the unit is added to my saved units list on my profile page
+
+- **Scenario 2:** Removing a saved unit.
+  - **Given** I have previously saved a unit
+  - **When** I click the Save button again on that unit
+  - **Then** the unit is removed from my saved units list
+
+- **Scenario 3:** Viewing saved units while not logged in.
+  - **Given** I am not logged in
+  - **When** I attempt to save a unit
+  - **Then** I am redirected to the login page
+
+---
+
+**Title:** View Personal Profile
+**User Story:** As a logged-in student, I want to view my profile page so that I can manage my reviews and saved units in one place.
+**Acceptance Criteria:**
+
+- **Scenario 1:** Viewing submitted reviews.
+  - **Given** I am logged in and on my profile page
+  - **When** I select the My Reviews tab
+  - **Then** all reviews I have submitted are displayed with options to edit or delete each one
+
+- **Scenario 2:** Viewing saved units.
+  - **Given** I am logged in and on my profile page
+  - **When** I select the Saved Units tab
+  - **Then** all units I have saved are displayed with links to their detail pages
+
+- **Scenario 3:** Accessing the profile page while not logged in.
+  - **Given** I am not logged in
+  - **When** I attempt to navigate to the profile page
+  - **Then** I am redirected to the login page

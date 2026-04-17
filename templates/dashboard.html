@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero / Search ──────────────────────────────── -->
+<div class="ur-hero">
+  <div class="ur-hero-inner">
+    <h1 class="ur-hero-title">What's your unit actually like?</h1>
+    <p class="ur-hero-sub">
+      Search before you enrol — honest ratings from UWA students across every faculty.
+    </p>
+    <div class="ur-search-wrap">
+      <i class="fa-solid fa-magnifying-glass ur-search-icon"></i>
+      <input
+        type="text"
+        class="ur-search-input"
+        id="search-input"
+        placeholder="Search by unit name or code, e.g. CITS3403…"
+        autocomplete="off"
+      >
+    </div>
+  </div>
+</div>
+
+<!-- ── Faculty filter pills ──────────────────────── -->
+<div class="ur-filter-row">
+  <button class="ur-filter-pill active" data-faculty="all">All faculties</button>
+  <button class="ur-filter-pill" data-faculty="engineering">Engineering &amp; Computing</button>
+  <button class="ur-filter-pill" data-faculty="science">Science</button>
+  <button class="ur-filter-pill" data-faculty="business">Business</button>
+  <button class="ur-filter-pill" data-faculty="arts">Arts</button>
+  <button class="ur-filter-pill" data-faculty="law">Law</button>
+</div>
+
+<!-- ── Stats bar ──────────────────────────────────── -->
+<div class="ur-stats-bar">
+  <div class="ur-stat-card">
+    <div class="ur-stat-value">13</div>
+    <div class="ur-stat-label">Units listed</div>
+  </div>
+  <div class="ur-stat-card">
+    <div class="ur-stat-value">439</div>
+    <div class="ur-stat-label">Reviews written</div>
+  </div>
+  <div class="ur-stat-card">
+    <div class="ur-stat-value">4.1</div>
+    <div class="ur-stat-label">Avg overall score</div>
+  </div>
+</div>
+
+<!-- ── Unit grid ──────────────────────────────────── -->
+<div class="ur-page">
+  <div class="ur-section-header">
+    <span class="ur-section-title">Top rated units</span>
+    <span class="ur-section-count" id="unit-count"></span>
+  </div>
+
+  <!-- Unit cards are injected here by dashboard.js via AJAX -->
+  <div class="ur-unit-grid" id="unit-grid">
+    <div class="ur-loading">
+      <i class="fa-solid fa-spinner fa-spin"></i> Loading units…
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

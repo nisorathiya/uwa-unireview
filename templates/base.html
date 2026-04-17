@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if title %}{{ title }} — UWA UniReview{% else %}UWA UniReview{% endif %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Shared CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+  <!-- Page-specific CSS -->
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+  {% block navbar %}
+  <!-- Navbar — hidden on login page, shown on all other pages -->
+  <nav class="ur-navbar">
+    <a href="{{ url_for('main.index') }}" class="ur-brand">
+      UWA <span class="ur-brand-accent">UniReview</span>
+    </a>
+    <div class="ur-navbar-links">
+      <a href="{{ url_for('main.index') }}" class="ur-nav-link">Browse</a>
+      <a href="#" class="ur-nav-link">My reviews</a>
+      <a href="{{ url_for('main.login') }}" class="ur-btn ur-btn-outline">Log in</a>
+    </div>
+  </nav>
+  {% endblock %}
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="ur-flash-wrapper">
+        {% for category, message in messages %}
+          <div class="ur-flash ur-flash-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Page content -->
+  {% block content %}{% endblock %}
+
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Shared JS -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+  <!-- Page-specific JS -->
+  {% block extra_js %}{% endblock %}
+
+</body>
+</html>

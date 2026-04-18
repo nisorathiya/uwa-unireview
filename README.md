@@ -1,6 +1,14 @@
 # uwa-unireview
 Web application for browsing, submitting, and discussing honest reviews of UWA units before you enrol.
 
+## Team
+| UWA ID | Full Name | GitHub Username | Role |
+|----------|------------|-----------------|---------------------|
+| 24667496 | Nidhi Sorathiya | @nisorathiya | Team Lead / Backend |
+| 24500079 | Nevis Herlangga | @nxherl | Full-stack |
+| 24726135 | Md Mahabub Islam | @ProgMahabub21 | Backend |
+| 25167515 | Xingyan Guo | @laomeile | Frontend |
+
 ## How to Run the Application
 
 ### 1. Clone the repository
@@ -30,10 +38,23 @@ pip install -r requirements.txt
 python run.py
 ```
 
-Open **http://localhost:5000** in your favourite browser.
+Open **http://localhost:5000** in your browser.
 
 ### Important notes
 - Always activate the virtual environment before running the app
 - You will see `(venv)` at the start of your terminal line when it is active
 - Never commit the `venv/` folder — it is already in `.gitignore`
 - Run `git pull` before starting work each day to get the latest changes from teammates
+
+## How to Run the Tests
+Activate the virtual environment first, then:
+
+```bash
+# Run all tests
+pytest
+
+# Verbose output
+pytest -v
+```
+
+> Note: Tests will be added in Sprint 4 once all core features are implemented.

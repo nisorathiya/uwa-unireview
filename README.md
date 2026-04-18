@@ -4,10 +4,10 @@ Web application for browsing, submitting, and discussing honest reviews of UWA u
 ## Team
 | UWA ID | Full Name | GitHub Username | Role |
 |----------|------------|-----------------|---------------------|
-| 24667496 | Nidhi Sorathiya | @nisorathiya | Team Lead / Backend |
-| 24500079 | Nevis Herlangga | @nxherl | Full-stack |
-| 24726135 | Md Mahabub Islam | @ProgMahabub21 | Backend |
-| 25167515 | Xingyan Guo | @laomeile | Frontend |
+| 24667496 | Nidhi Sorathiya | @nisorathiya | Team Lead/Full-stack developer |
+| 24500079 | Nevis Herlangga | @nxherl | Documentation/Backend developer |
+| 24726135 | Md Mahabub Islam | @ProgMahabub21 | Backend developer |
+| 25167515 | Xingyan Guo | @laomeile | Frontend developer |
 
 ## How to Run the Application
 

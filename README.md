@@ -46,15 +46,3 @@ Open **http://localhost:5000** in your browser.
 - Never commit the `venv/` folder — it is already in `.gitignore`
 - Run `git pull` before starting work each day to get the latest changes from teammates
 
-## How to Run the Tests
-Activate the virtual environment first, then:
-
-```bash
-# Run all tests
-pytest
-
-# Verbose output
-pytest -v
-```
-
-> Note: Tests will be added in Sprint 4 once all core features are implemented.

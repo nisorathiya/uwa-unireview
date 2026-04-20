@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
+from app.forms import LoginForm, RegisterForm
 
 main = Blueprint('main', __name__)
 
@@ -16,24 +17,35 @@ UNITS = [
 
 @main.route('/')
 def index():
-    return render_template('dashboard.html', title='Browse Units')
+    return '<h1>UWA UniReview - server is running</h1>'
 
-@main.route('/login')
+@main.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html', title='Log in') 
+    login_form    = LoginForm()
+    register_form = RegisterForm()
+    show_register = request.args.get('tab') == 'signup'
 
-@main.route('/api/search')
-def api_search():
-    q = request.args.get('q', '').lower().strip() 
-    faculty = request.args.get('faculty', 'all').lower().strip()
-    
-    results = []
-    for unit in UNITS:
-        if faculty != 'all' and unit['faculty'] != faculty:
-            continue
-        if q and q not in unit['code'].lower() and q not in unit['name'].lower():
-            continue
-        results.append(unit)
-    
-    results.sort(key=lambda u: u['overall'], reverse=True)
-    return jsonify(results)
+    if login_form.validate_on_submit():
+        flash(f'Login attempted for {login_form.email.data}. Database not yet connected.', 'info')
+        return redirect(url_for('main.index'))
+
+    return render_template('login.html',
+                           title='Log in',
+                           login_form=login_form,
+                           register_form=register_form,
+                           show_register=show_register)
+
+@main.route('/register', methods=['POST'])
+def register():
+    login_form    = LoginForm()
+    register_form = RegisterForm()
+
+    if register_form.validate_on_submit():
+        flash(f'Account created for {register_form.email.data}. Database not yet connected.', 'info')
+        return redirect(url_for('main.index'))
+
+    return render_template('login.html',
+                           title='Sign up',
+                           login_form=login_form,
+                           register_form=register_form,
+                           show_register=True)

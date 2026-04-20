@@ -1,14 +1,8 @@
 # ─────────────────────────────────────────────────────────────
 # models.py
 # Database models for UWA UniReview.
-#
-# NOTE: These are stubs only — SQLAlchemy and the database will
-# be wired in once the Databases lecture has been covered.
-# The class structures are defined now so routes and templates
-# can reference them without needing to change later.
-# ─────────────────────────────────────────────────────────────
 
-# from app import db  # uncomment when SQLAlchemy is set up
+# from app import db  # uncomment when database is setup
 
 
 class User:

@@ -11,7 +11,7 @@
 ## Attendance
 | Name | Status |
 |---|---|
-| MD Mahabub Islam | Absent |
+| MD Mahabub Islam | Absent due to Web Project demo's |
 | Nevis Herlangga | Present |
 | Nidhi Sorathiya | Present |
 | Xingyan Guo (Ailee) | Present |
@@ -34,7 +34,9 @@ The group discussed the requirements for Checkpoint 3 and what needs to be prepa
 | Nevis | Ask the lecturer about Checkpoint 3 requirements | 15 Apr |
 | Nidhi | Invite team to the GitHub project | 16 Apr |
 | Nidhi | Create the repo structure and Flask instance | 16 Apr |
-| Ailee | Create the static frontend pages | 20 Apr |
+| Ailee | Create the static frontend Dashboard | 20 Apr |
+| Md    | Create the static login/register page | 21 Apr |
+
 
 ---
 

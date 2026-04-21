@@ -11,6 +11,11 @@ class LoginForm(FlaskForm):
                              validators=[DataRequired()])
     submit   = SubmitField('Log in')
 
+    def validate_email(self, email):
+        """Custom validator: only allow UWA student emails."""
+        if not email.data.endswith('@student.uwa.edu.au'):
+            raise ValidationError('Please use your UWA student email address.')
+
 
 class RegisterForm(FlaskForm):
     """Form for new user registration."""

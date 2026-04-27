@@ -11,13 +11,18 @@ class User(db.Model):
 
     id            = db.Column(db.Integer,     primary_key=True)
     username      = db.Column(db.String(80),  nullable=False)
-    email         = db.Column(db.String(120), nullable=False, unique=True)
+    email         = db.Column(db.String(120), nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     created_at    = db.Column(db.DateTime,    default=datetime.utcnow)
 
     reviews     = db.relationship('Review',    backref='author', lazy=True)
     votes       = db.relationship('Vote',      backref='user',   lazy=True)
     saved_units = db.relationship('SavedUnit', backref='user',   lazy=True)
+
+    __table_args__ = (
+        db.UniqueConstraint('username', name='unique_username'),
+        db.UniqueConstraint('email',    name='unique_email'),
+    )
 
     def __repr__(self):
         return f'<User {self.email}>'

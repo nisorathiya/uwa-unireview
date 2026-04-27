@@ -2,83 +2,94 @@
 # models.py
 # Database models for UWA UniReview.
 
-# from app import db  # uncomment when database is setup
+from app import db
+from datetime import datetime
 
 
-class User:
-    """
-    Represents a registered student.
+class User(db.Model):
+    __tablename__ = 'users'
 
-    Fields (to be implemented with SQLAlchemy):
-        id            - primary key
-        username      - display name
-        email         - must end in @student.uwa.edu.au
-        password_hash - bcrypt hash, never plain text
-        created_at    - timestamp of registration
-    """
-    pass
+    id            = db.Column(db.Integer,     primary_key=True)
+    username      = db.Column(db.String(80),  nullable=False)
+    email         = db.Column(db.String(120), nullable=False, unique=True)
+    password_hash = db.Column(db.String(200), nullable=False)
+    created_at    = db.Column(db.DateTime,    default=datetime.utcnow)
 
+    reviews     = db.relationship('Review',    backref='author', lazy=True)
+    votes       = db.relationship('Vote',      backref='user',   lazy=True)
+    saved_units = db.relationship('SavedUnit', backref='user',   lazy=True)
 
-class Unit:
-    """
-    Represents a UWA unit.
-
-    Fields (to be implemented with SQLAlchemy):
-        id            - primary key
-        code          - e.g. CITS3403
-        name          - full unit name
-        faculty       - e.g. Engineering & Computing
-        credit_points - 6 or 12
-    """
-    pass
+    def __repr__(self):
+        return f'<User {self.email}>'
 
 
-class Review:
-    """
-    Represents a student review of a unit.
+class Unit(db.Model):
+    __tablename__ = 'units'
 
-    Fields (to be implemented with SQLAlchemy):
-        id                - primary key
-        user_id           - FK → User
-        unit_id           - FK → Unit
-        overall_rating    - 1 to 5
-        workload_rating   - 1 to 5
-        difficulty_rating - 1 to 5
-        usefulness_rating - 1 to 5
-        comment           - free text
-        year_taken        - e.g. 2024
-        semester          - S1 or S2
-        created_at        - timestamp
-    Constraints:
-        unique(user_id, unit_id) — one review per student per unit
-    """
-    pass
+    id            = db.Column(db.Integer,      primary_key=True)
+    code          = db.Column(db.String(10),   nullable=False, unique=True)
+    name          = db.Column(db.String(150),  nullable=False)
+    faculty       = db.Column(db.String(100))
+    credit_points = db.Column(db.Integer,      default=6)
+
+    reviews  = db.relationship('Review',    backref='unit', lazy=True)
+    saved_by = db.relationship('SavedUnit', backref='unit', lazy=True)
+
+    def __repr__(self):
+        return f'<Unit {self.code}>'
 
 
-class Vote:
-    """
-    Represents an upvote on a review.
+class Review(db.Model):
+    __tablename__ = 'reviews'
 
-    Fields (to be implemented with SQLAlchemy):
-        id        - primary key
-        user_id   - FK → User
-        review_id - FK → Review
-        value     - +1 or -1
-    Constraints:
-        unique(user_id, review_id) — one vote per student per review
-    """
-    pass
+    id                = db.Column(db.Integer,    primary_key=True)
+    user_id           = db.Column(db.Integer,    db.ForeignKey('users.id'), nullable=False)
+    unit_id           = db.Column(db.Integer,    db.ForeignKey('units.id'), nullable=False)
+    overall_rating    = db.Column(db.Integer,    nullable=False)   # 1–5
+    workload_rating   = db.Column(db.Integer,    nullable=False)   # 1–5
+    difficulty_rating = db.Column(db.Integer,    nullable=False)   # 1–5
+    usefulness_rating = db.Column(db.Integer,    nullable=False)   # 1–5
+    comment           = db.Column(db.Text,       nullable=False)
+    year_taken        = db.Column(db.Integer)
+    semester          = db.Column(db.String(2))  # S1 or S2
+    created_at        = db.Column(db.DateTime,   default=datetime.utcnow)
+
+    votes = db.relationship('Vote', backref='review', lazy=True)
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'unit_id', name='unique_review'),
+    )
+
+    def __repr__(self):
+        return f'<Review {self.id} by User {self.user_id}>'
 
 
-class SavedUnit:
-    """
-    Represents a unit saved to a student's watchlist.
+class Vote(db.Model):
+    __tablename__ = 'votes'
 
-    Fields (to be implemented with SQLAlchemy):
-        id      - primary key
-        user_id - FK → User
-        unit_id - FK → Unit
-    Constraints:
-        unique(user_id, unit_id)
-    """
-    pass
+    id        = db.Column(db.Integer, primary_key=True)
+    user_id   = db.Column(db.Integer, db.ForeignKey('users.id'),   nullable=False)
+    review_id = db.Column(db.Integer, db.ForeignKey('reviews.id'), nullable=False)
+    value     = db.Column(db.Integer, nullable=False)   # +1 or -1
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'review_id', name='unique_vote'),
+    )
+
+    def __repr__(self):
+        return f'<Vote {self.value} by User {self.user_id}>'
+
+
+class SavedUnit(db.Model):
+    __tablename__ = 'saved_units'
+
+    id      = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    unit_id = db.Column(db.Integer, db.ForeignKey('units.id'), nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'unit_id', name='unique_saved'),
+    )
+
+    def __repr__(self):
+        return f'<SavedUnit User {self.user_id} Unit {self.unit_id}>'

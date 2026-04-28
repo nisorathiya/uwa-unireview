@@ -4,7 +4,7 @@ from app import create_app, db
 from app.models import Unit
 
 UNITS = [
-   # ── Engineering & Computing ──────────────────────────────────────
+    # ── Engineering & Computing ──────────────────────────────────────
     ("CITS1001", "Software Engineering with Java",          "Engineering & Computing", 6),
     ("CITS1401", "Computational Thinking with Python",      "Engineering & Computing", 6),
     ("CITS2005", "Object Oriented Programming",             "Engineering & Computing", 6),
@@ -21,7 +21,7 @@ UNITS = [
     # ── Science ──────────────────────────────────────────────────────
     ("MATH1011", "Multivariable Calculus",                  "Science", 6),
     ("MATH1012", "Mathematical Theory and Methods",         "Science", 6),
-    ("MATH1013", "Mathematical Analysis ",                  "Science", 6),
+    ("MATH1013", "Mathematical Analysis",                  "Science", 6),
     ("STAT1400", "Statistics for Science",                  "Science", 6),
     ("STAT2401", "Analysis of Experiments",                 "Science", 6),
     ("BIOL1130", "Frontiers in Biology",                    "Science", 6),

@@ -4,19 +4,19 @@ from app import create_app, db
 from app.models import Unit
 
 UNITS = [
-    # ── Engineering & Computing ───────────────────────────────────────
-    ("CITS1001", "Software Engineering with Java",          "engineering", 6),
-    ("CITS1401", "Computational Thinking with Python",      "engineering", 6),
-    ("CITS2005", "Object Oriented Programming",             "engineering", 6),
-    ("CITS2200", "Data Structures and Algorithms",          "engineering", 6),
-    ("CITS3001", "Advanced Algorithms", "Engineering & Computing", 6),
-    ("CITS3003", "Graphics and Animation",                  "engineering", 6),
-    ("CITS3200", "Professional Computing",                  "engineering", 6),
-    ("CITS3403", "Agile Web Development",                   "engineering", 6),
-    ("CITS3007", "Secure Coding",                           "engineering", 6),
-    ("CITS4009", "Fundamentals of Data Science",            "engineering", 6),
-    ("CITS5505", "Agile Web Development (Postgrad)",        "engineering", 6),
-    ("ENSC3020", "Digital Embedded Systems",                "engineering", 6),
+   # ── Engineering & Computing ──────────────────────────────────────
+    ("CITS1001", "Software Engineering with Java",          "Engineering & Computing", 6),
+    ("CITS1401", "Computational Thinking with Python",      "Engineering & Computing", 6),
+    ("CITS2005", "Object Oriented Programming",             "Engineering & Computing", 6),
+    ("CITS2200", "Data Structures and Algorithms",          "Engineering & Computing", 6),
+    ("CITS3001", "Advanced Algorithms",                     "Engineering & Computing", 6),
+    ("CITS3003", "Graphics and Animation",                  "Engineering & Computing", 6),
+    ("CITS3200", "Professional Computing",                  "Engineering & Computing", 6),
+    ("CITS3403", "Agile Web Development",                   "Engineering & Computing", 6),
+    ("CITS3007", "Secure Coding",                           "Engineering & Computing", 6),
+    ("CITS4009", "Fundamentals of Data Science",            "Engineering & Computing", 6),
+    ("CITS5505", "Agile Web Development (Postgrad)",        "Engineering & Computing", 6),
+    ("ENSC3020", "Digital Embedded Systems",                "Engineering & Computing", 6),
 
     # ── Science ──────────────────────────────────────────────────────
     ("MATH1011", "Multivariable Calculus",                  "Science", 6),

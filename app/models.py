@@ -40,6 +40,16 @@ class Unit(db.Model):
     reviews  = db.relationship('Review',    backref='unit', lazy=True)
     saved_by = db.relationship('SavedUnit', backref='unit', lazy=True)
 
+    # to_dict() method for easy JSON serialization
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'code': self.code,
+            'name': self.name,
+            'faculty': self.faculty,
+            'credit_points': self.credit_points
+        }
+
     def __repr__(self):
         return f'<Unit {self.code}>'
 

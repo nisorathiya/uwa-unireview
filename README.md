@@ -40,6 +40,12 @@ python run.py
 
 Open **http://localhost:5000** in your browser.
 
+### 5. Seed the database with 32 UWA units
+```bash
+python3 seed.py
+```
+
+
 ### Important notes
 - Always activate the virtual environment before running the app
 - You will see `(venv)` at the start of your terminal line when it is active

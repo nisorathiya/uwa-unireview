@@ -51,6 +51,7 @@ def seed():
     app = create_app()
     with app.app_context():
         db.create_all()
+        print(f"Seeding database with {len(UNITS)} units...\n") 
 
         added   = 0
         skipped = 0

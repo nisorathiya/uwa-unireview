@@ -4,3 +4,4 @@ wtforms>=3.1.1
 email-validator>=2.1.0
 flask-sqlalchemy
 flask-migrate
+flask-login>=0.6.3

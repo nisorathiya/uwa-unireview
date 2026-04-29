@@ -4,9 +4,10 @@
 
 from app import db
 from datetime import datetime
+from flask_login import UserMixin
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     id            = db.Column(db.Integer,     primary_key=True)
@@ -49,6 +50,7 @@ class Unit(db.Model):
             'faculty': self.faculty,
             'credit_points': self.credit_points
         }
+        
     def __repr__(self):
         return f'<Unit {self.code}>'
 

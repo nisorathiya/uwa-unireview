@@ -2,10 +2,12 @@ from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 from config import Config
 
 db      = SQLAlchemy()
 migrate = Migrate()
+login_manager   = LoginManager()
 
 # Initialise extensions (without binding to an app yet)
 csrf = CSRFProtect()
@@ -23,6 +25,8 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     # Initialise extensions with the app
     csrf.init_app(app)
+    login_manager.init_app(app)
+    login_manager.login_view = 'main.login'  #if not authenticated, redirects to login page
 
     # Register routes blueprint
     from app.routes import main
@@ -31,3 +35,10 @@ def create_app(config_class=Config):
     from app import models
     
     return app
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    from app.models import User
+    return User.query.get(int(user_id))
+

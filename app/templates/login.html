@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
 
+{% block flash_messages %}{% endblock %}
+
 {% block navbar %}{% endblock %}
 
 {% block content %}
@@ -74,41 +76,45 @@
   <div class="login-right">
     <div class="auth-box">
 
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="auth-alert auth-alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
       <h1 class="auth-heading" id="auth-heading">
         {% if show_register %}Create an account{% else %}Welcome back{% endif %}
       </h1>
       <p class="auth-subheading" id="auth-subheading">
         {% if show_register %}
-          Join UWA students sharing honest unit reviews.
+        Join UWA students sharing honest unit reviews.
         {% else %}
-          Log in to access your reviews and profile.
+        Log in to access your reviews and profile.
         {% endif %}
       </p>
 
       <!-- Tab switcher -->
       <div class="auth-tabs">
-        <button class="auth-tab {% if not show_register %}active{% endif %}"
-                id="tab-login" type="button">Log in</button>
-        <button class="auth-tab {% if show_register %}active{% endif %}"
-                id="tab-signup" type="button">Sign up</button>
+        <button class="auth-tab {% if not show_register %}active{% endif %}" id="tab-login" type="button">Log
+          in</button>
+        <button class="auth-tab {% if show_register %}active{% endif %}" id="tab-signup" type="button">Sign up</button>
       </div>
 
       <!-- ── Login form ──────────────────────────── -->
-      <form id="form-login"
-            method="POST"
-            action="{{ url_for('main.login') }}"
-            {% if show_register %}style="display:none"{% endif %}
-            novalidate>
+      <form id="form-login" method="POST" action="{{ url_for('main.login') }}" {% if show_register
+        %}style="display:none" {% endif %} novalidate>
 
         {{ login_form.hidden_tag() }}
 
         <div class="form-group">
           {{ login_form.email.label(class="form-label") }}
           {{ login_form.email(class="form-control" + (" is-invalid" if login_form.email.errors else ""),
-                              placeholder="you@student.uwa.edu.au",
-                              autocomplete="email") }}
+          placeholder="you@student.uwa.edu.au",
+          autocomplete="email") }}
           {% for error in login_form.email.errors %}
-            <div class="form-error">{{ error }}</div>
+          <div class="form-error">{{ error }}</div>
           {% endfor %}
         </div>
 
@@ -118,10 +124,10 @@
             <a href="#" class="form-hint">Forgot password?</a>
           </div>
           {{ login_form.password(class="form-control" + (" is-invalid" if login_form.password.errors else ""),
-                                 placeholder="••••••••",
-                                 autocomplete="current-password") }}
+          placeholder="••••••••",
+          autocomplete="current-password") }}
           {% for error in login_form.password.errors %}
-            <div class="form-error">{{ error }}</div>
+          <div class="form-error">{{ error }}</div>
           {% endfor %}
         </div>
 
@@ -130,41 +136,38 @@
       </form>
 
       <!-- ── Register form ───────────────────────── -->
-      <form id="form-signup"
-            method="POST"
-            action="{{ url_for('main.register') }}"
-            {% if not show_register %}style="display:none"{% endif %}
-            novalidate>
+      <form id="form-signup" method="POST" action="{{ url_for('main.register') }}" {% if not show_register
+        %}style="display:none" {% endif %} novalidate>
 
         {{ register_form.hidden_tag() }}
 
         <div class="form-group">
           {{ register_form.name.label(class="form-label") }}
           {{ register_form.name(class="form-control" + (" is-invalid" if register_form.name.errors else ""),
-                                placeholder="Jane Smith",
-                                autocomplete="name") }}
+          placeholder="Jane Smith",
+          autocomplete="name") }}
           {% for error in register_form.name.errors %}
-            <div class="form-error">{{ error }}</div>
+          <div class="form-error">{{ error }}</div>
           {% endfor %}
         </div>
 
         <div class="form-group">
           {{ register_form.email.label(class="form-label") }}
           {{ register_form.email(class="form-control" + (" is-invalid" if register_form.email.errors else ""),
-                                 placeholder="you@student.uwa.edu.au",
-                                 autocomplete="email") }}
+          placeholder="you@student.uwa.edu.au",
+          autocomplete="email") }}
           <div class="form-hint">Use your UWA student email address.</div>
           {% for error in register_form.email.errors %}
-            <div class="form-error">{{ error }}</div>
+          <div class="form-error">{{ error }}</div>
           {% endfor %}
         </div>
 
         <div class="form-group">
           {{ register_form.password.label(class="form-label") }}
           {{ register_form.password(class="form-control" + (" is-invalid" if register_form.password.errors else ""),
-                                    placeholder="At least 6 characters",
-                                    autocomplete="new-password",
-                                    id="signup-password") }}
+          placeholder="At least 6 characters",
+          autocomplete="new-password",
+          id="signup-password") }}
           <div class="pw-strength">
             <div class="pw-bar"></div>
             <div class="pw-bar"></div>
@@ -172,18 +175,18 @@
           </div>
           <div class="pw-label" id="pw-label"></div>
           {% for error in register_form.password.errors %}
-            <div class="form-error">{{ error }}</div>
+          <div class="form-error">{{ error }}</div>
           {% endfor %}
         </div>
 
         <div class="form-group">
           {{ register_form.confirm.label(class="form-label") }}
           {{ register_form.confirm(class="form-control" + (" is-invalid" if register_form.confirm.errors else ""),
-                                   placeholder="••••••••",
-                                   autocomplete="new-password",
-                                   id="signup-confirm") }}
+          placeholder="••••••••",
+          autocomplete="new-password",
+          id="signup-confirm") }}
           {% for error in register_form.confirm.errors %}
-            <div class="form-error">{{ error }}</div>
+          <div class="form-error">{{ error }}</div>
           {% endfor %}
         </div>
 

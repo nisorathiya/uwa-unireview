@@ -34,12 +34,18 @@
     <div class="ur-navbar-links">
       <a href="{{ url_for('main.index') }}" class="ur-nav-link">Browse</a>
       <a href="#" class="ur-nav-link">My reviews</a>
+      {% if current_user.is_authenticated %}
+      <span class="ur-nav-link">Hi, {{ current_user.username }}</span>
+      <a href="{{ url_for('main.logout') }}" class="ur-btn ur-btn-outline">Log out</a>
+      {% else %}
       <a href="{{ url_for('main.login') }}" class="ur-btn ur-btn-outline">Log in</a>
+      {% endif %}
     </div>
   </nav>
   {% endblock %}
 
   <!-- Flash messages -->
+  {% block flash_messages %}
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       <div class="ur-flash-wrapper">
@@ -51,6 +57,7 @@
       </div>
     {% endif %}
   {% endwith %}
+  {% endblock %}
 
   <!-- Page content -->
   {% block content %}{% endblock %}
@@ -68,4 +75,5 @@
   {% block extra_js %}{% endblock %}
 
 </body>
+
 </html>

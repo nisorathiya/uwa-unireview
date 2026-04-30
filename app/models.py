@@ -52,7 +52,7 @@ class Unit(db.Model):
             'overall':       0,
             'workload':      0,
             'reviews':       0
-    }
+        }
         
     def __repr__(self):
         return f'<Unit {self.code}>'

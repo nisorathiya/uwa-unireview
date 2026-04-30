@@ -44,12 +44,15 @@ class Unit(db.Model):
     # to_dict() method for easy JSON serialization
     def to_dict(self):
         return {
-            'id': self.id,
-            'code': self.code,
-            'name': self.name,
-            'faculty': self.faculty,
-            'credit_points': self.credit_points
-        }
+            'id':            self.id,
+            'code':          self.code,
+            'name':          self.name,
+            'faculty':       self.faculty,
+            'credit_points': self.credit_points,
+            'overall':       0,
+            'workload':      0,
+            'reviews':       0
+    }
         
     def __repr__(self):
         return f'<Unit {self.code}>'

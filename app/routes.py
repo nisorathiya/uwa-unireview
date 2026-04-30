@@ -93,7 +93,7 @@ def search():
             )
         )
 
-    if faculty:
+    if faculty and faculty != 'all':
         query = query.filter_by(faculty=faculty)
 
     units = query.all()

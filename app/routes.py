@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.forms import LoginForm, RegisterForm
 from app import db
-from app.models import User
+from app.models import User, Unit
 
 main = Blueprint('main', __name__)
 
@@ -92,14 +92,21 @@ def logout():
 
 @main.route('/api/search')
 def search():
-    q = request.args.get('q', '').strip().lower()
-    faculty = request.args.get('faculty', 'all').strip().lower()
+    q       = request.args.get('q', '').strip()
+    faculty = request.args.get('faculty', '').strip()
 
-    results = UNITS
+    query = Unit.query
+
     if q:
-        results = [u for u in results if q in u['code'].lower() or q in u['name'].lower()]
-    if faculty != 'all':
-        results = [u for u in results if u['faculty'].lower() == faculty]   
+        query = query.filter(
+            db.or_(
+                Unit.name.ilike(f'%{q}%'),
+                Unit.code.ilike(f'%{q}%')
+            )
+        )
 
-    results = sorted(results, key=lambda u: u['overall'], reverse=True)
-    return jsonify(results)
+    if faculty:
+        query = query.filter_by(faculty=faculty)
+
+    units = query.all()
+    return jsonify([u.to_dict() for u in units])

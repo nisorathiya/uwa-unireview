@@ -6,6 +6,19 @@
 
 {% block content %}
 <div class="unit-page"
-    <p>Unit detail page — coming soon</p>
+
+    <!-- Unit Header -->
+    <div class="unit-header">
+        <div class="unit-header-inner">
+            <div class="unit-meta">
+                <span class="unit-code">{{ unit.code }}</span>
+                <span class="unit-faculty">{{ unit.faculty | capitalize }}</span>
+                <span class="unit-credits">{{ unit.credit_points }} credit points</span>
+            </div>
+        <h1 class="unit-name">{{ unit.name }}</h1>
+        </div>
+    </div>
+
+
 </div>
 {% endblock %}

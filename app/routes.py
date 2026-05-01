@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.forms import LoginForm, RegisterForm
 from app import db
-from app.models import User, Unit
+from app.models import User, Unit, Review
 
 main = Blueprint('main', __name__)
 
@@ -98,3 +98,9 @@ def search():
 
     units = query.all()
     return jsonify([u.to_dict() for u in units])
+
+@main.route('/unit/<code>')
+def unit_detail(code):
+    unit    = Unit.query.filter_by(code=code).first_or_404()
+    reviews = Review.query.filter_by(unit_id=unit.id).all()
+    return render_template('unit.html', unit=unit, reviews=reviews)

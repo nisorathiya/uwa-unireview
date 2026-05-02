@@ -1,0 +1,234 @@
+/* ── Unit Detail Page ─────────────────────────────── */
+
+.unit-page {
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+
+/* Header */
+.unit-header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    padding: 3rem 0 2.5rem;
+}
+
+.unit-header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.unit-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.unit-code {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    background: rgba(255,255,255,0.15);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+}
+
+.unit-faculty,
+.unit-credits {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.65);
+}
+
+.unit-name {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Body */
+.unit-body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Score Cards */
+.score-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.score-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.score-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #888;
+    margin-bottom: 0.4rem;
+}
+
+.score-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1a1a2e;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+}
+
+.score-bar-track {
+    height: 6px;
+    background: #eee;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+}
+
+.score-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4f8ef7, #7c3aed);
+    border-radius: 99px;
+    transition: width 0.6s ease;
+}
+
+.score-max {
+    font-size: 0.75rem;
+    color: #aaa;
+}
+
+/* Reviews */
+.reviews-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.reviews-header .section-title {
+    margin-bottom: 0;
+}
+
+.review-count {
+    color: #aaa;
+    font-weight: 400;
+}
+
+.write-review-btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 1.25rem;
+}
+
+.review-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 1rem;
+}
+
+.review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reviewer-avatar {
+    font-size: 1.5rem;
+    color: #ccc;
+}
+
+.reviewer-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1a1a2e;
+}
+
+.reviewer-meta {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.review-overall .fa-star { font-size: 0.9rem; }
+.star-filled { color: #f59e0b; }
+.star-empty  { color: #e5e7eb; }
+
+.review-comment {
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.review-ratings {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.review-rating-pill {
+    font-size: 0.78rem;
+    background: #f3f4f6;
+    color: #555;
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+}
+
+.review-rating-pill strong {
+    color: #1a1a2e;
+}
+
+/* Empty state */
+.no-reviews {
+    text-align: center;
+    padding: 3rem;
+    color: #aaa;
+    background: #fff;
+    border-radius: 12px;
+}
+
+.no-reviews i {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .unit-name { font-size: 1.4rem; }
+    .score-cards { grid-template-columns: repeat(2, 1fr); }
+}
+

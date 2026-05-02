@@ -99,28 +99,8 @@ def search():
     units = query.all()
     return jsonify([u.to_dict() for u in units])
 
-<<<<<<< HEAD
 @main.route('/unit/<code>')
 def unit_detail(code):
-    unit    = Unit.query.filter_by(code=code).first_or_404()
-    reviews = Review.query.filter_by(unit_id=unit.id).all()
-    return render_template('unit.html', unit=unit, reviews=reviews)
-=======
-
-@main.route('/unit/<int:unit_id>')
-def unit_test(unit_id):
-    unit = Unit.query.get_or_404(unit_id)
-    form = ReviewForm()
-    return render_template('unit.html',
-                           unit=unit,
-                           reviews=[],
-                           review_count=0,
-                           avg_overall=0,
-                           avg_workload=0,
-                           avg_difficulty=0,
-                           avg_usefulness=0,
-                           user_has_reviewed=False,
-                           is_saved=False,
-                           similar_units=[],
-                           form=form)
->>>>>>> main
+    """Fetch unit by code and render the unit detail page. Returns 404 if not found."""
+    unit = Unit.query.filter_by(code=code).first_or_404()
+    return render_template('unit.html', unit=unit, reviews=unit.reviews)

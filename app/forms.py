@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 
 
@@ -35,3 +35,11 @@ class RegisterForm(FlaskForm):
         """Custom validator: only allow UWA student emails."""
         if not email.data.endswith('@student.uwa.edu.au'):
             raise ValidationError('Please use your UWA student email address.')
+
+
+class ReviewForm(FlaskForm):
+    comment = TextAreaField('Review', validators=[
+        DataRequired(),
+        Length(min=20, message='Review must be at least 20 characters.')
+    ])
+    submit = SubmitField('Submit review')

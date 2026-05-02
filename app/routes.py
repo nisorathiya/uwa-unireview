@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.forms import LoginForm, RegisterForm
+from app.forms import LoginForm, RegisterForm, ReviewForm
 from app import db
 from app.models import User, Unit, Review
 
@@ -99,8 +99,28 @@ def search():
     units = query.all()
     return jsonify([u.to_dict() for u in units])
 
+<<<<<<< HEAD
 @main.route('/unit/<code>')
 def unit_detail(code):
     unit    = Unit.query.filter_by(code=code).first_or_404()
     reviews = Review.query.filter_by(unit_id=unit.id).all()
     return render_template('unit.html', unit=unit, reviews=reviews)
+=======
+
+@main.route('/unit/<int:unit_id>')
+def unit_test(unit_id):
+    unit = Unit.query.get_or_404(unit_id)
+    form = ReviewForm()
+    return render_template('unit.html',
+                           unit=unit,
+                           reviews=[],
+                           review_count=0,
+                           avg_overall=0,
+                           avg_workload=0,
+                           avg_difficulty=0,
+                           avg_usefulness=0,
+                           user_has_reviewed=False,
+                           is_saved=False,
+                           similar_units=[],
+                           form=form)
+>>>>>>> main

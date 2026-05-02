@@ -103,4 +103,5 @@ def search():
 def unit_detail(code):
     """Fetch unit by code and render the unit detail page. Returns 404 if not found."""
     unit = Unit.query.filter_by(code=code).first_or_404()
-    return render_template('unit.html', unit=unit, reviews=unit.reviews)
+    form = ReviewForm()
+    return render_template('unit.html', unit=unit, reviews=unit.reviews, review_count=len(unit.reviews), form=form)

@@ -102,6 +102,21 @@ def search():
 @main.route('/unit/<code>')
 def unit_detail(code):
     """Fetch unit by code and render the unit detail page. Returns 404 if not found."""
-    unit = Unit.query.filter_by(code=code).first_or_404()
-    form = ReviewForm()
-    return render_template('unit.html', unit=unit, reviews=unit.reviews, review_count=len(unit.reviews), form=form)
+    unit    = Unit.query.filter_by(code=code).first_or_404()
+    reviews = unit.reviews
+    count   = len(reviews)
+
+    avg_overall    = round(sum(r.overall_rating    for r in reviews) / count, 1) if count else 0
+    avg_workload   = round(sum(r.workload_rating   for r in reviews) / count, 1) if count else 0
+    avg_difficulty = round(sum(r.difficulty_rating for r in reviews) / count, 1) if count else 0
+    avg_usefulness = round(sum(r.usefulness_rating for r in reviews) / count, 1) if count else 0
+
+    return render_template('unit.html',
+                           unit=unit,
+                           reviews=reviews,
+                           review_count=count,
+                           form=ReviewForm(),
+                           avg_overall=avg_overall,
+                           avg_workload=avg_workload,
+                           avg_difficulty=avg_difficulty,
+                           avg_usefulness=avg_usefulness)

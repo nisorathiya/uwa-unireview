@@ -32,7 +32,7 @@ Stores registered student accounts.
 | id | Integer | PRIMARY KEY | Auto-incrementing unique identifier |
 | username | String(80) | NOT NULL, UNIQUE | Display name chosen at registration |
 | email | String(120) | NOT NULL, UNIQUE | Must be a `@student.uwa.edu.au` address |
-| password_hash | String(200) | NOT NULL | Bcrypt hash; plain text password is never stored |
+| password_hash | String(200) | NOT NULL | werkzeug pbkdf2 hash; plain text password is never stored |
 | created_at | DateTime | DEFAULT utcnow | Timestamp of account creation |
 
 **Constraints:**

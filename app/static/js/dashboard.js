@@ -38,7 +38,7 @@ $(document).ready(function () {
         $.each(units, function (i, u) {
             var facultyLabel = u.faculty.charAt(0).toUpperCase() + u.faculty.slice(1);
             var card =
-                '<a href="#" class="ur-unit-card">' +
+                '<a href="/unit/' + u.code + '" class="ur-unit-card">' +
                   '<div class="ur-unit-code">' + u.code + '</div>' +
                   '<div class="ur-unit-name">'  + u.name + '</div>' +
                   '<div class="ur-unit-faculty">' + facultyLabel + '</div>' +

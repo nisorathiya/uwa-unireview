@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.forms import LoginForm, RegisterForm
+from app.forms import LoginForm, RegisterForm, ReviewForm
 from app import db
-from app.models import User, Unit
+from app.models import User, Unit, Review
 
 main = Blueprint('main', __name__)
 
@@ -98,3 +98,52 @@ def search():
 
     units = query.all()
     return jsonify([u.to_dict() for u in units])
+
+@main.route('/unit/<code>')
+def unit_detail(code):
+    """Fetch unit by code and render the unit detail page."""
+    unit = Unit.query.filter_by(code=code).first_or_404()
+
+    reviews_raw  = Review.query.filter_by(unit_id=unit.id)\
+                               .order_by(Review.created_at.desc()).all()
+    review_count = len(reviews_raw)
+
+    if review_count > 0:
+        avg_overall    = round(sum(r.overall_rating    for r in reviews_raw) / review_count, 1)
+        avg_workload   = round(sum(r.workload_rating   for r in reviews_raw) / review_count, 1)
+        avg_difficulty = round(sum(r.difficulty_rating for r in reviews_raw) / review_count, 1)
+        avg_usefulness = round(sum(r.usefulness_rating for r in reviews_raw) / review_count, 1)
+    else:
+        avg_overall = avg_workload = avg_difficulty = avg_usefulness = 0
+
+    # attach vote info to each review (zeros for now until vote route exists)
+    for r in reviews_raw:
+        r.upvotes   = 0
+        r.downvotes = 0
+        r.user_vote = None
+
+    user_has_reviewed = False
+    is_saved = False
+    if current_user.is_authenticated:
+        user_has_reviewed = Review.query.filter_by(
+            unit_id=unit.id, user_id=current_user.id
+        ).first() is not None
+
+    similar_units = Unit.query.filter(
+        Unit.faculty == unit.faculty, Unit.id != unit.id
+    ).limit(4).all()
+
+    form = ReviewForm()
+
+    return render_template('unit.html',
+                           unit=unit,
+                           reviews=reviews_raw,
+                           review_count=review_count,
+                           avg_overall=avg_overall,
+                           avg_workload=avg_workload,
+                           avg_difficulty=avg_difficulty,
+                           avg_usefulness=avg_usefulness,
+                           user_has_reviewed=user_has_reviewed,
+                           is_saved=is_saved,
+                           similar_units=similar_units,
+                           form=form)

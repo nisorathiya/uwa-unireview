@@ -207,5 +207,7 @@ def to_dict(self):
 ## Security Notes
 
 - Passwords are stored as hashes using `werkzeug.security.generate_password_hash`
-- The `SECRET_KEY` in `config.py` is used to sign session cookies and CSRF tokens  (in production this must be set as an environment variable, not hardcoded).
-- The current `config.py` is committed to the repository for development convenience. This is acceptable for a university project but would not be done in production
+- The current config.py contains a fallback dev secret key for ease of
+local development. The committed file is safe because it falls back
+to an environment variable (SECRET_KEY) when one is set, which is
+what production deployment would use.

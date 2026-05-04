@@ -312,7 +312,7 @@
         <div class="sidebar-card-title">Similar units</div>
         {% if similar_units %}
           {% for s in similar_units %}
-          <a href="{{ url_for('main.unit_detail', unit_id=s.id) }}" class="sidebar-similar-unit">
+          <a href="{{ url_for('main.unit_detail', code=s.code) }}" class="sidebar-similar-unit">
             <span class="sidebar-similar-code">{{ s.code }}</span>
             <span class="sidebar-similar-name">{{ s.name }}</span>
           </a>

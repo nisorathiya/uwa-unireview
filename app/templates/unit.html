@@ -1,12 +1,10 @@
-{% extends "base.html" %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/unit.css') }}">
-{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/unit.css') }}"
+/>
+{% endblock %} {% block content %}
 <div class="unit-page">
-
   <!-- ── Breadcrumb ─────────────────────────────────────────── -->
   <div class="unit-breadcrumb">
     <a href="{{ url_for('main.index') }}">Browse</a>
@@ -22,8 +20,12 @@
       <div class="unit-hero-code">{{ unit.code }} · {{ unit.faculty }}</div>
       <h1 class="unit-hero-name">{{ unit.name }}</h1>
       <div class="unit-hero-meta">
-        <span class="unit-meta-pill">{{ unit.credit_points }} credit points</span>
-        <span class="unit-meta-pill">{{ review_count }} review{{ 's' if review_count != 1 }}</span>
+        <span class="unit-meta-pill"
+          >{{ unit.credit_points }} credit points</span
+        >
+        <span class="unit-meta-pill"
+          >{{ review_count }} review{{ 's' if review_count != 1 }}</span
+        >
       </div>
     </div>
 
@@ -37,11 +39,15 @@
 
       <!-- Save unit button -->
       {% if current_user.is_authenticated %}
-        <button class="ur-btn {% if is_saved %}ur-btn-saved{% else %}ur-btn-outline{% endif %} js-save-btn"
-                data-unit-id="{{ unit.id }}">
-          <i class="fa-{% if is_saved %}solid{% else %}regular{% endif %} fa-bookmark"></i>
-          {% if is_saved %}Saved{% else %}Save unit{% endif %}
-        </button>
+      <button
+        class="ur-btn {% if is_saved %}ur-btn-saved{% else %}ur-btn-outline{% endif %} js-save-btn"
+        data-unit-id="{{ unit.id }}"
+      >
+        <i
+          class="fa-{% if is_saved %}solid{% else %}regular{% endif %} fa-bookmark"
+        ></i>
+        {% if is_saved %}Saved{% else %}Save unit{% endif %}
+      </button>
       {% endif %}
     </div>
   </div>
@@ -49,11 +55,13 @@
   <!-- ── Stats bar ──────────────────────────────────────────── -->
   {% if review_count > 0 %}
   <div class="unit-stats-bar">
-
     <div class="unit-stat">
       <div class="unit-stat-label">Overall</div>
       <div class="unit-stat-track">
-        <div class="unit-stat-fill fill-overall" style="width: {{ (avg_overall / 5 * 100)|round }}%"></div>
+        <div
+          class="unit-stat-fill fill-overall"
+          style="width: {{ (avg_overall / 5 * 100)|round }}%"
+        ></div>
       </div>
       <div class="unit-stat-val">{{ avg_overall }}/5</div>
     </div>
@@ -61,7 +69,10 @@
     <div class="unit-stat">
       <div class="unit-stat-label">Workload</div>
       <div class="unit-stat-track">
-        <div class="unit-stat-fill fill-workload" style="width: {{ (avg_workload / 5 * 100)|round }}%"></div>
+        <div
+          class="unit-stat-fill fill-workload"
+          style="width: {{ (avg_workload / 5 * 100)|round }}%"
+        ></div>
       </div>
       <div class="unit-stat-val">{{ avg_workload }}/5</div>
     </div>
@@ -69,7 +80,10 @@
     <div class="unit-stat">
       <div class="unit-stat-label">Difficulty</div>
       <div class="unit-stat-track">
-        <div class="unit-stat-fill fill-difficulty" style="width: {{ (avg_difficulty / 5 * 100)|round }}%"></div>
+        <div
+          class="unit-stat-fill fill-difficulty"
+          style="width: {{ (avg_difficulty / 5 * 100)|round }}%"
+        ></div>
       </div>
       <div class="unit-stat-val">{{ avg_difficulty }}/5</div>
     </div>
@@ -77,38 +91,38 @@
     <div class="unit-stat">
       <div class="unit-stat-label">Usefulness</div>
       <div class="unit-stat-track">
-        <div class="unit-stat-fill fill-usefulness" style="width: {{ (avg_usefulness / 5 * 100)|round }}%"></div>
+        <div
+          class="unit-stat-fill fill-usefulness"
+          style="width: {{ (avg_usefulness / 5 * 100)|round }}%"
+        ></div>
       </div>
       <div class="unit-stat-val">{{ avg_usefulness }}/5</div>
     </div>
-
   </div>
   {% endif %}
 
   <!-- ── Main content ───────────────────────────────────────── -->
   <div class="unit-content">
-
     <!-- ── Reviews column ──────────────────────────────────── -->
     <div class="unit-reviews-col">
-
       <div class="unit-section-header">
         <h2 class="unit-section-title">
           {{ review_count }} Review{{ 's' if review_count != 1 }}
         </h2>
         {% if current_user.is_authenticated and not user_has_reviewed %}
-          <button class="ur-btn ur-btn-primary js-toggle-review-form">
-            <i class="fa-solid fa-plus"></i> Write a review
-          </button>
+        <button class="ur-btn ur-btn-primary js-toggle-review-form">
+          <i class="fa-solid fa-plus"></i> Write a review
+        </button>
         {% elif not current_user.is_authenticated %}
-          <a href="{{ url_for('main.login') }}" class="ur-btn ur-btn-primary">
-            Log in to review
-          </a>
+        <a href="{{ url_for('main.login') }}" class="ur-btn ur-btn-primary">
+          Log in to review
+        </a>
         {% endif %}
       </div>
 
       <!-- ── Review form (hidden by default) ─────────────── -->
       {% if current_user.is_authenticated and not user_has_reviewed %}
-      <div class="unit-review-form" id="review-form" style="display:none">
+      <div class="unit-review-form" id="review-form" style="display: none">
         <h3 class="review-form-title">Your review for {{ unit.code }}</h3>
 
         <form method="POST" action="#" novalidate>
@@ -116,47 +130,110 @@
 
           <!-- Rating sliders -->
           <div class="rating-grid">
-
             <div class="rating-row">
-              <label class="rating-label">Overall <span class="rating-val" id="val-overall">3</span>/5</label>
-              <input type="range" min="1" max="5" value="3" name="overall_rating"
-                     class="rating-slider" id="slider-overall"
-                     oninput="document.getElementById('val-overall').textContent=this.value">
-              <div class="rating-hints"><span>Poor</span><span>Excellent</span></div>
+              <label class="rating-label"
+                >Overall
+                <span class="rating-val" id="val-overall">3</span>/5</label
+              >
+              <input
+                type="range"
+                min="1"
+                max="5"
+                value="3"
+                name="overall_rating"
+                class="rating-slider"
+                id="slider-overall"
+                oninput="
+                  document.getElementById('val-overall').textContent =
+                    this.value
+                "
+              />
+              <div class="rating-hints">
+                <span>Poor</span><span>Excellent</span>
+              </div>
             </div>
 
             <div class="rating-row">
-              <label class="rating-label">Workload <span class="rating-val" id="val-workload">3</span>/5</label>
-              <input type="range" min="1" max="5" value="3" name="workload_rating"
-                     class="rating-slider" id="slider-workload"
-                     oninput="document.getElementById('val-workload').textContent=this.value">
-              <div class="rating-hints"><span>Very heavy</span><span>Very light</span></div>
+              <label class="rating-label"
+                >Workload
+                <span class="rating-val" id="val-workload">3</span>/5</label
+              >
+              <input
+                type="range"
+                min="1"
+                max="5"
+                value="3"
+                name="workload_rating"
+                class="rating-slider"
+                id="slider-workload"
+                oninput="
+                  document.getElementById('val-workload').textContent =
+                    this.value
+                "
+              />
+              <div class="rating-hints">
+                <span>Very heavy</span><span>Very light</span>
+              </div>
             </div>
 
             <div class="rating-row">
-              <label class="rating-label">Difficulty <span class="rating-val" id="val-difficulty">3</span>/5</label>
-              <input type="range" min="1" max="5" value="3" name="difficulty_rating"
-                     class="rating-slider" id="slider-difficulty"
-                     oninput="document.getElementById('val-difficulty').textContent=this.value">
-              <div class="rating-hints"><span>Very hard</span><span>Very easy</span></div>
+              <label class="rating-label"
+                >Difficulty
+                <span class="rating-val" id="val-difficulty">3</span>/5</label
+              >
+              <input
+                type="range"
+                min="1"
+                max="5"
+                value="3"
+                name="difficulty_rating"
+                class="rating-slider"
+                id="slider-difficulty"
+                oninput="
+                  document.getElementById('val-difficulty').textContent =
+                    this.value
+                "
+              />
+              <div class="rating-hints">
+                <span>Very hard</span><span>Very easy</span>
+              </div>
             </div>
 
             <div class="rating-row">
-              <label class="rating-label">Usefulness <span class="rating-val" id="val-usefulness">3</span>/5</label>
-              <input type="range" min="1" max="5" value="3" name="usefulness_rating"
-                     class="rating-slider" id="slider-usefulness"
-                     oninput="document.getElementById('val-usefulness').textContent=this.value">
-              <div class="rating-hints"><span>Not useful</span><span>Very useful</span></div>
+              <label class="rating-label"
+                >Usefulness
+                <span class="rating-val" id="val-usefulness">3</span>/5</label
+              >
+              <input
+                type="range"
+                min="1"
+                max="5"
+                value="3"
+                name="usefulness_rating"
+                class="rating-slider"
+                id="slider-usefulness"
+                oninput="
+                  document.getElementById('val-usefulness').textContent =
+                    this.value
+                "
+              />
+              <div class="rating-hints">
+                <span>Not useful</span><span>Very useful</span>
+              </div>
             </div>
-
           </div>
 
           <!-- Comment -->
           <div class="form-group mt-3">
             <label class="form-label">Your review</label>
-            <textarea name="comment" class="form-control review-textarea"
-                      placeholder="Share your honest experience — what did you learn, how was the workload, any tips for future students?"
-                      rows="4" required minlength="20"></textarea>
+            <textarea
+              name="comment"
+              class="form-control review-textarea"
+              placeholder="Share your honest experience — what did you learn, how was the workload, any tips for future students?"
+              rows="4"
+              required
+              minlength="20"
+            ></textarea>
             <div class="form-hint">Minimum 20 characters.</div>
           </div>
 
@@ -166,7 +243,7 @@
               <label class="form-label">Year taken</label>
               <select name="year_taken" class="form-control">
                 {% for y in range(2024, 2019, -1) %}
-                  <option value="{{ y }}">{{ y }}</option>
+                <option value="{{ y }}">{{ y }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -180,99 +257,139 @@
           </div>
 
           <div class="review-form-actions">
-            <button type="submit" class="ur-btn ur-btn-primary">Submit review</button>
-            <button type="button" class="ur-btn ur-btn-ghost js-toggle-review-form">Cancel</button>
+            <button type="submit" class="ur-btn ur-btn-primary">
+              Submit review
+            </button>
+            <button
+              type="button"
+              class="ur-btn ur-btn-ghost js-toggle-review-form"
+            >
+              Cancel
+            </button>
           </div>
-
         </form>
       </div>
       {% endif %}
 
       <!-- ── Review cards ─────────────────────────────────── -->
-      {% if reviews %}
-        {% for review in reviews %}
-        <div class="review-card" id="review-{{ review.id }}">
-
-          <div class="review-card-header">
-            <div class="review-card-author">
-              <div class="review-avatar">{{ review.author.username[0].upper() }}</div>
-              <div>
-                <div class="review-author-name">{{ review.author.username }}</div>
-                <div class="review-author-meta">
-                  {{ review.year_taken }} · Semester {{ review.semester }}
-                </div>
+      {% if reviews %} {% for review in reviews %}
+      <div class="review-card" id="review-{{ review.id }}">
+        <div class="review-card-header">
+          <div class="review-card-author">
+            <div class="review-avatar">
+              {{ review.author.username[0].upper() }}
+            </div>
+            <div>
+              <div class="review-author-name">{{ review.author.username }}</div>
+              <div class="review-author-meta">
+                {{ review.year_taken }} · Semester {{ review.semester }}
               </div>
             </div>
-            <div class="review-card-score">
-              <span class="review-score-badge {% if review.overall_rating >= 4 %}badge-high{% elif review.overall_rating >= 3 %}badge-mid{% else %}badge-low{% endif %}">
-                ★ {{ review.overall_rating }}/5
-              </span>
-            </div>
           </div>
-
-          <p class="review-comment">{{ review.comment }}</p>
-
-          <div class="review-mini-stats">
-            <span class="review-mini-stat">Workload <strong>{{ review.workload_rating }}/5</strong></span>
-            <span class="review-mini-stat">Difficulty <strong>{{ review.difficulty_rating }}/5</strong></span>
-            <span class="review-mini-stat">Usefulness <strong>{{ review.usefulness_rating }}/5</strong></span>
+          <div class="review-card-score">
+            <span
+              class="review-score-badge {% if review.overall_rating >= 4 %}badge-high{% elif review.overall_rating >= 3 %}badge-mid{% else %}badge-low{% endif %}"
+            >
+              ★ {{ review.overall_rating }}/5
+            </span>
           </div>
+        </div>
 
-          <div class="review-card-footer">
-            <div class="review-vote-row">
-              <span class="review-helpful-label">Helpful?</span>
-              {% if current_user.is_authenticated %}
-                <button class="vote-btn js-vote" data-review-id="{{ review.id }}" data-value="1"
-                        {% if review.user_vote == 1 %}data-active="true"{% endif %}>
-                  <i class="fa-solid fa-thumbs-up"></i>
-                  <span class="vote-count">{{ review.upvotes }}</span>
-                </button>
-                <button class="vote-btn js-vote" data-review-id="{{ review.id }}" data-value="-1"
-                        {% if review.user_vote == -1 %}data-active="true"{% endif %}>
-                  <i class="fa-solid fa-thumbs-down"></i>
-                  <span class="vote-count">{{ review.downvotes }}</span>
-                </button>
-              {% else %}
-                <span class="vote-count-static">
-                  <i class="fa-solid fa-thumbs-up"></i> {{ review.upvotes }}
-                </span>
-              {% endif %}
-            </div>
+        <p class="review-comment">{{ review.comment }}</p>
 
-            <!-- Edit/delete only for review author -->
-            {% if current_user.is_authenticated and current_user.id == review.user_id %}
-            <div class="review-owner-actions">
-              <button class="review-action-btn js-edit-review" data-review-id="{{ review.id }}">
-                <i class="fa-solid fa-pen"></i> Edit
-              </button>
-              <form method="POST"
-                    action="#"
-                    class="d-inline"
-                    onsubmit="return confirm('Delete your review?')">
-                {{ form.hidden_tag() }}
-                <button type="submit" class="review-action-btn review-action-delete">
-                  <i class="fa-solid fa-trash"></i> Delete
-                </button>
-              </form>
-            </div>
+        <div class="review-mini-stats">
+          <span class="review-mini-stat"
+            >Workload <strong>{{ review.workload_rating }}/5</strong></span
+          >
+          <span class="review-mini-stat"
+            >Difficulty <strong>{{ review.difficulty_rating }}/5</strong></span
+          >
+          <span class="review-mini-stat"
+            >Usefulness <strong>{{ review.usefulness_rating }}/5</strong></span
+          >
+        </div>
+
+        <div class="review-card-footer">
+          <div class="review-vote-row">
+            <span class="review-helpful-label">Helpful?</span>
+            {% if current_user.is_authenticated %}
+            <button
+              class="vote-btn js-vote"
+              data-review-id="{{ review.id }}"
+              data-value="1"
+              {%
+              if
+              review.user_vote=""
+              ="1"
+              %}data-active="true"
+              {%
+              endif
+              %}
+            >
+              <i class="fa-solid fa-thumbs-up"></i>
+              <span class="vote-count">{{ review.upvotes }}</span>
+            </button>
+            <button
+              class="vote-btn js-vote"
+              data-review-id="{{ review.id }}"
+              data-value="-1"
+              {%
+              if
+              review.user_vote=""
+              ="-1"
+              %}data-active="true"
+              {%
+              endif
+              %}
+            >
+              <i class="fa-solid fa-thumbs-down"></i>
+              <span class="vote-count">{{ review.downvotes }}</span>
+            </button>
+            {% else %}
+            <span class="vote-count-static">
+              <i class="fa-solid fa-thumbs-up"></i> {{ review.upvotes }}
+            </span>
             {% endif %}
           </div>
 
+          <!-- Edit/delete only for review author -->
+          {% if current_user.is_authenticated and current_user.id ==
+          review.user_id %}
+          <div class="review-owner-actions">
+            <button
+              class="review-action-btn js-edit-review"
+              data-review-id="{{ review.id }}"
+            >
+              <i class="fa-solid fa-pen"></i> Edit
+            </button>
+            <form
+              method="POST"
+              action="#"
+              class="d-inline"
+              onsubmit="return confirm('Delete your review?');"
+            >
+              {{ form.hidden_tag() }}
+              <button
+                type="submit"
+                class="review-action-btn review-action-delete"
+              >
+                <i class="fa-solid fa-trash"></i> Delete
+              </button>
+            </form>
+          </div>
+          {% endif %}
         </div>
-        {% endfor %}
-
-      {% else %}
-        <div class="unit-no-reviews">
-          <i class="fa-regular fa-comment-dots"></i>
-          <p>No reviews yet. Be the first to share your experience!</p>
-        </div>
+      </div>
+      {% endfor %} {% else %}
+      <div class="unit-no-reviews">
+        <i class="fa-regular fa-comment-dots"></i>
+        <p>No reviews yet. Be the first to share your experience!</p>
+      </div>
       {% endif %}
-
     </div>
 
     <!-- ── Sidebar ──────────────────────────────────────────── -->
     <aside class="unit-sidebar">
-
       <div class="sidebar-card">
         <div class="sidebar-card-title">Unit info</div>
         <div class="sidebar-info-row">
@@ -296,11 +413,16 @@
       {% if review_count > 0 %}
       <div class="sidebar-card">
         <div class="sidebar-card-title">Rating breakdown</div>
-        {% for label, val in [('Overall', avg_overall), ('Workload', avg_workload), ('Difficulty', avg_difficulty), ('Usefulness', avg_usefulness)] %}
+        {% for label, val in [('Overall', avg_overall), ('Workload',
+        avg_workload), ('Difficulty', avg_difficulty), ('Usefulness',
+        avg_usefulness)] %}
         <div class="sidebar-rating-row">
           <span class="sidebar-rating-label">{{ label }}</span>
           <div class="sidebar-rating-bar-track">
-            <div class="sidebar-rating-bar-fill" style="width: {{ (val / 5 * 100)|round }}%"></div>
+            <div
+              class="sidebar-rating-bar-fill"
+              style="width: {{ (val / 5 * 100)|round }}%"
+            ></div>
           </div>
           <span class="sidebar-rating-val">{{ val }}</span>
         </div>
@@ -310,24 +432,21 @@
 
       <div class="sidebar-card">
         <div class="sidebar-card-title">Similar units</div>
-        {% if similar_units %}
-          {% for s in similar_units %}
-          <a href="{{ url_for('main.unit_detail', unit_id=s.id) }}" class="sidebar-similar-unit">
-            <span class="sidebar-similar-code">{{ s.code }}</span>
-            <span class="sidebar-similar-name">{{ s.name }}</span>
-          </a>
-          {% endfor %}
-        {% else %}
-          <p class="sidebar-empty">No similar units found.</p>
+        {% if similar_units %} {% for s in similar_units %}
+        <a
+          href="{{ url_for('main.unit_detail', code=s.code) }}"
+          class="sidebar-similar-unit"
+        >
+          <span class="sidebar-similar-code">{{ s.code }}</span>
+          <span class="sidebar-similar-name">{{ s.name }}</span>
+        </a>
+        {% endfor %} {% else %}
+        <p class="sidebar-empty">No similar units found.</p>
         {% endif %}
       </div>
-
     </aside>
-
   </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
+{% endblock %} {% block extra_js %}
 <script src="{{ url_for('static', filename='js/unit.js') }}"></script>
 {% endblock %}

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError, NumberRange, Optional
 
 
 class LoginForm(FlaskForm):
@@ -35,3 +35,34 @@ class RegisterForm(FlaskForm):
         """Custom validator: only allow UWA student emails."""
         if not email.data.endswith('@student.uwa.edu.au'):
             raise ValidationError('Please use your UWA student email address.')
+
+
+from wtforms import IntegerField, TextAreaField
+from wtforms.validators import NumberRange, Optional
+
+class ReviewForm(FlaskForm):
+    """Form for submitting or editing a unit review."""
+
+    overall_rating    = IntegerField('Overall rating',
+                                     validators=[
+                                         DataRequired(),
+                                         NumberRange(min=1, max=5, message='Rating must be between 1 and 5.')
+                                     ])
+    workload_rating   = IntegerField('Workload rating',
+                                     validators=[
+                                         DataRequired(),
+                                         NumberRange(min=1, max=5, message='Rating must be between 1 and 5.')
+                                     ])
+    difficulty_rating = IntegerField('Difficulty rating',
+                                     validators=[
+                                         DataRequired(),
+                                         NumberRange(min=1, max=5, message='Rating must be between 1 and 5.')
+                                     ])
+    usefulness_rating = IntegerField('Usefulness rating',
+                                     validators=[
+                                         DataRequired(),
+                                         NumberRange(min=1, max=5, message='Rating must be between 1 and 5.')
+                                     ])
+    comment           = TextAreaField('Comment',
+                                      validators=[Optional()])
+    submit            = SubmitField('Submit review')

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
+from wtforms import IntegerField, StringField, PasswordField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, ValidationError, Optional
 
 
 class LoginForm(FlaskForm):
@@ -38,8 +38,31 @@ class RegisterForm(FlaskForm):
 
 
 class ReviewForm(FlaskForm):
-    comment = TextAreaField('Review', validators=[
-        DataRequired(),
-        Length(min=20, message='Review must be at least 20 characters.')
-    ])
-    submit = SubmitField('Submit review')
+    """Form for submitting or editing a unit review."""
+
+    overall_rating    = IntegerField('Overall rating',
+                                     validators=[
+                                         DataRequired(),
+                                         NumberRange(min=1, max=5, message='Rating must be between 1 and 5.')
+                                     ])
+    workload_rating   = IntegerField('Workload rating',
+                                     validators=[
+                                         DataRequired(),
+                                         NumberRange(min=1, max=5, message='Rating must be between 1 and 5.')
+                                     ])
+    difficulty_rating = IntegerField('Difficulty rating',
+                                     validators=[
+                                         DataRequired(),
+                                         NumberRange(min=1, max=5, message='Rating must be between 1 and 5.')
+                                     ])
+    usefulness_rating = IntegerField('Usefulness rating',
+                                     validators=[
+                                         DataRequired(),
+                                         NumberRange(min=1, max=5, message='Rating must be between 1 and 5.')
+                                     ])
+    comment           = TextAreaField('Comment',
+                                      validators=[
+                                          DataRequired(),
+                                          Length(min=20, message='Review must be at least 20 characters.')
+                                      ])
+    submit            = SubmitField('Submit review')

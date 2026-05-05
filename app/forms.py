@@ -62,7 +62,7 @@ class ReviewForm(FlaskForm):
                                      ])
     comment           = TextAreaField('Comment',
                                       validators=[
-                                          Optional(),
+                                          DataRequired(),
                                           Length(min=20, message='Review must be at least 20 characters.')
                                       ])
     submit            = SubmitField('Submit review')

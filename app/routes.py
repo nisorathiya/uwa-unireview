@@ -97,8 +97,8 @@ def search():
         query = query.filter_by(faculty=faculty)
 
     units = query.all()
-    return jsonify([u.to_dict() for u in units])
-
+    return jsonify([u.to_dict() for u in units])      
+        
 @main.route('/unit/<code>')
 def unit_detail(code):
     """Fetch unit by code and render the unit detail page."""
@@ -258,3 +258,48 @@ def saved_units():
     saved = SavedUnit.query.filter_by(user_id=current_user.id).all()
     units = [s.unit for s in saved]
     return render_template('saved_units.html', units=units)
+
+@main.route('/profile/edit')
+@login_required
+def edit_profile():
+    flash('Edit profile coming soon.', 'info')
+    return redirect(url_for('main.profile', username=current_user.username))
+
+@main.route('/profile/<username>')
+def profile(username):
+    """Display user profile page with their reviews and stats.
+    """
+    profile_user = User.query.filter_by(username=username).first_or_404()
+    
+    # All reviews by this user, newest first, with their unit eagerly available
+    reviews = (
+        Review.query
+        .filter_by(user_id=profile_user.id)
+        .order_by(Review.created_at.desc())
+        .all()
+    )
+    
+    # Stats
+    total_reviews = len(reviews)
+    if total_reviews:
+        avg_rating = round(sum(r.overall_rating for r in reviews) / total_reviews, 1)
+    else:
+        avg_rating = None
+        
+    upvotes_received = (
+        db.session.query(db.func.count(Vote.id))
+        .join(Review, Vote.review_id == Review.id)
+        .filter(Review.user_id == profile_user.id, Vote.value == 1)
+        .scalar()
+    ) or 0
+    
+    is_own_profile = current_user.is_authenticated and current_user.id == profile_user.id
+    
+    return render_template('profile.html',
+                           title=f"{profile_user.username}'s Profile",
+                           profile_user=profile_user,
+                           reviews=reviews,
+                           total_reviews=total_reviews,
+                           avg_rating=avg_rating,
+                           upvotes_received=upvotes_received,
+                           is_own_profile=is_own_profile) 

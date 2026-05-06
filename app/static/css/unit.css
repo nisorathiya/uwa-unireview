@@ -1,19 +1,5 @@
 /* ─── Unit detail page ───────────────────────────────────────── */
 
-/* ── Breadcrumb ─────────────────────────────────────────────── */
-.unit-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 48px;
-  font-size: .8125rem;
-  color: var(--gray-500);
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-100);
-}
-.unit-breadcrumb a { color: var(--blue-600); }
-.unit-breadcrumb a:hover { text-decoration: underline; }
-
 /* ── Hero ───────────────────────────────────────────────────── */
 .unit-hero {
   display: flex;

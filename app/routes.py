@@ -230,7 +230,7 @@ def delete_review(review_id):
     flash('Your review has been deleted.', 'info')
     return redirect(url_for('main.unit_detail', code=unit_code))
 
-# Save/unsave a unit
+# Save/unsave a unit (AJAX)
 @main.route('/api/save-unit', methods=['POST'])
 @login_required
 def save_unit():
@@ -247,3 +247,11 @@ def save_unit():
         db.session.add(save)
         db.session.commit()
         return jsonify({'saved': True})
+
+# Saved units page
+@main.route('/saved-units')
+@login_required
+def saved_units():
+    saved = SavedUnit.query.filter_by(user_id=current_user.id).all()
+    units = [s.unit for s in saved]
+    return render_template('saved_units.html', units=units)

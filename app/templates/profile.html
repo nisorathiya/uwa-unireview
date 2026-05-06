@@ -7,123 +7,121 @@
 {% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="profile-page">
+<div class="profile-page">
 
-        <nav class="profile-breadcrumb" aria-label="Breadcrumb">
-            <a href="{{ url_for('main.index') }}">Browse</a>
-            <span class="meta-sep">/</span>
-            <span>{{ profile_user.username }}</span>
-        </nav>
+  <!-- ── Breadcrumb ─────────────────────────────────────────── -->
+  {% set crumbs = [
+    ('Browse', url_for('main.index')),
+    (profile_user.username, None)
+  ] %}
+  {% include '_breadcrumb.html' %}
 
-        <!-- {% if is_own_profile %}
-        <div class="profile-own-banner">
-            <span class="banner-icon">✦</span>
-            This is your profile page. Here you can see all your reviews and stats in one place. Keep sharing your experience to help your fellow students!
-        </div>
-    {% endif %} -->
-
-        <section class="profile-card">
-            <div class="profile-avatar" aria-hidden="true">
-                {{ profile_user.username[0].upper() }}
-            </div>
-
-            <div class="profile-info">
-                <h1 class="profile-username">{{ profile_user.username }}</h1>
-                <p class="profile-meta">
-                    UWA student
-                    <span class="meta-sep">·</span>
-                    Joined {{ profile_user.created_at.strftime('%B %Y') if profile_user.created_at else 'recently' }}
-                </p>
-                {% if is_own_profile %}
-                <p class="profile-email">{{ profile_user.email }}</p>
-                {% endif %}
-            </div>
-
-            {% if is_own_profile %}
-            <div class="profile-actions">
-                <a href="{{ url_for('main.edit_profile') }}" class="btn-edit-profile">Edit Profile</a>
-            </div>
-            {% endif %}
-        </section>
-
-        <section class="profile-stats" aria-label="Profile Statistics">
-            <div class="stat-card">
-                <span class="stat-value">{{ total_reviews }}</span>
-                <span class="stat-label">Reviews</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">
-                    {% if avg_rating %}{{ avg_rating }}{% else %}N/A{% endif %}
-                </span>
-                <span class="stat-label">Average Rating</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">{{ upvotes_received }}</span>
-                <span class="stat-label">Helpful votes</span>
-            </div>
-        </section>
-
-        <section class="profile-reviews">
-            <h2 class="reviews-heading">
-                {% if is_own_profile %}My reviews{% else %}Reviews by {{ profile_user.username }}{% endif %}
-            </h2>
-
-            {% if reviews %}
-            {% for review in reviews %}
-            <div class="review-card">
-
-                <div class="review-card-header">
-                    <div class="review-card-author">
-                        <a href="{{ url_for('main.unit_detail', code=review.unit.code) }}"
-                            class="review-unit-link-block">
-                            <div class="review-unit-code-pill">{{ review.unit.code }}</div>
-                            <div class="review-unit-name-text">{{ review.unit.name }}</div>
-                        </a>
-                    </div>
-                    <div class="review-card-score">
-                        <span
-                            class="review-score-badge {% if review.overall_rating >= 4 %}badge-high{% elif review.overall_rating >= 3 %}badge-mid{% else %}badge-low{% endif %}">
-                            ★ {{ review.overall_rating }}/5
-                        </span>
-                    </div>
-                </div>
-
-                <p class="review-comment">{{ review.comment }}</p>
-
-                <div class="review-mini-stats">
-                    <span class="review-mini-stat">Workload <strong>{{ review.workload_rating }}/5</strong></span>
-                    <span class="review-mini-stat">Difficulty <strong>{{ review.difficulty_rating }}/5</strong></span>
-                    <span class="review-mini-stat">Usefulness <strong>{{ review.usefulness_rating }}/5</strong></span>
-                </div>
-
-                <div class="review-card-footer">
-                    <span class="review-author-meta">
-                        {% if review.year_taken %}{{ review.year_taken }} · Semester {{ review.semester }}{% endif %}
-                    </span>
-                    <time class="review-date"
-                        datetime="{{ review.created_at.isoformat() if review.created_at else '' }}">
-                        {{ review.created_at.strftime('%d %b %Y') if review.created_at else '' }}
-                    </time>
-                </div>
-
-            </div>
-            {% endfor %}
-            {% else %}
-            <div class="review-empty">
-                <p>
-                    {% if is_own_profile %}
-                    You haven't written any reviews yet. Start sharing your experience by reviewing a unit!
-                    {% else %}
-                    {{ profile_user.username }} hasn't written any reviews yet.
-                    {% endif %}
-                </p>
-                {% if is_own_profile %}
-                <a href="{{ url_for('main.index') }}" class="ur-btn ur-btn-primary mt-3">Browse units</a>
-                {% endif %}
-            </div>
-            {% endif %}
-        </section>
+  <!-- ── Profile hero ───────────────────────────────────────── -->
+  <div class="profile-hero">
+    <div class="profile-hero-left">
+      <div class="profile-avatar-large" aria-hidden="true">
+        {{ profile_user.username[0].upper() }}
+      </div>
+      <div class="profile-hero-info">
+        <h1 class="profile-hero-name">{{ profile_user.username }}</h1>
+        <p class="profile-hero-meta">
+          UWA student
+          <span class="meta-sep">·</span>
+          Joined {{ profile_user.created_at.strftime('%B %Y') if profile_user.created_at else 'recently' }}
+          {% if is_own_profile %}
+            <span class="meta-sep">·</span>
+            <span class="profile-email-inline">{{ profile_user.email }}</span>
+          {% endif %}
+        </p>
+      </div>
     </div>
+  </div>
+
+  <!-- ── Stats bar ──────────────────────────────────────────── -->
+  <div class="profile-stats-bar">
+
+    <div class="profile-stat">
+      <div class="profile-stat-label">Reviews written</div>
+      <div class="profile-stat-value">{{ total_reviews }}</div>
+    </div>
+
+    <div class="profile-stat">
+      <div class="profile-stat-label">Average rating given</div>
+      <div class="profile-stat-value">
+        {% if avg_rating %}{{ avg_rating }}<span class="profile-stat-suffix">/5</span>{% else %}—{% endif %}
+      </div>
+    </div>
+
+    <div class="profile-stat">
+      <div class="profile-stat-label">Helpful votes</div>
+      <div class="profile-stat-value">{{ upvotes_received }}</div>
+    </div>
+
+  </div>
+
+  <!-- ── Main content ───────────────────────────────────────── -->
+  <div class="profile-content">
+
+    <h2 class="profile-section-title">
+      {% if is_own_profile %}My reviews{% else %}Reviews by {{ profile_user.username }}{% endif %}
+      <span class="profile-section-count">({{ total_reviews }})</span>
+    </h2>
+
+    {% if reviews %}
+      {% for review in reviews %}
+      <div class="review-card">
+
+        <div class="review-card-header">
+          <div class="review-card-author">
+            <a href="{{ url_for('main.unit_detail', code=review.unit.code) }}"
+               class="review-unit-link-block">
+              <div class="review-unit-code-pill">{{ review.unit.code }}</div>
+              <div class="review-unit-name-text">{{ review.unit.name }}</div>
+            </a>
+          </div>
+          <div class="review-card-score">
+            <span class="review-score-badge {% if review.overall_rating >= 4 %}badge-high{% elif review.overall_rating >= 3 %}badge-mid{% else %}badge-low{% endif %}">
+              ★ {{ review.overall_rating }}/5
+            </span>
+          </div>
+        </div>
+
+        <p class="review-comment">{{ review.comment }}</p>
+
+        <div class="review-mini-stats">
+          <span class="review-mini-stat">Workload <strong>{{ review.workload_rating }}/5</strong></span>
+          <span class="review-mini-stat">Difficulty <strong>{{ review.difficulty_rating }}/5</strong></span>
+          <span class="review-mini-stat">Usefulness <strong>{{ review.usefulness_rating }}/5</strong></span>
+        </div>
+
+        <div class="review-card-footer">
+          <span class="review-author-meta">
+            {% if review.year_taken %}{{ review.year_taken }} · Semester {{ review.semester }}{% endif %}
+          </span>
+          <time class="review-date"
+                datetime="{{ review.created_at.isoformat() if review.created_at else '' }}">
+            {{ review.created_at.strftime('%d %b %Y') if review.created_at else '' }}
+          </time>
+        </div>
+
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="review-empty">
+        <i class="fa-regular fa-pen-to-square"></i>
+        <p>
+          {% if is_own_profile %}
+            You haven't written any reviews yet. Start sharing your experience!
+          {% else %}
+            {{ profile_user.username }} hasn't written any reviews yet.
+          {% endif %}
+        </p>
+        {% if is_own_profile %}
+          <a href="{{ url_for('main.index') }}" class="ur-btn ur-btn-primary">Browse units</a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
 </div>
 {% endblock %}

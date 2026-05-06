@@ -1,315 +1,150 @@
 /* profile.css */
 
 .profile-page {
-    padding: 1.5rem 0 4rem;
-    color: var(--gray-900);
-    font-family: var(--font-body);
+  padding-bottom: 4rem;
+  color: var(--gray-900);
+  font-family: var(--font-body);
 }
 
-.profile-breadcrumb {
-    margin-bottom: 1.5rem;
+/* ── Hero ───────────────────────────────────────────────────── */
+.profile-hero {
+  display: flex;
+  align-items: center;
+  padding: 36px 48px 28px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-100);
 }
 
-.profile-breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    font-size: .875rem;
-    color: var(--gray-500);
+.profile-hero-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.profile-breadcrumb a {
-    color: var(--blue-600);
-    text-decoration: none;
-    font-weight: 500;
+.profile-avatar-large {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--blue-600);
+  color: var(--white);
+  font-size: 1.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.profile-breadcrumb a:hover {
-    color: var(--blue-800);
+.profile-hero-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.profile-breadcrumb span {
-    color: var(--gray-500);
+.profile-hero-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0;
+  line-height: 1.25;
 }
 
-.profile-own-banner {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    background: var(--blue-50);
-    color: var(--blue-600);
-    font-size: .75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.4rem 0.9rem;
-    border-radius: var(--radius-full);
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--blue-100);
+.profile-hero-meta {
+  margin: 0;
+  font-size: .875rem;
+  color: var(--gray-500);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-/* ── Profile card ── */
-.profile-card {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    background: var(--white);
-    border: 1px solid rgba(0,0,0,.07);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem 1.75rem;
-    margin-bottom: 1.25rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+.profile-hero-meta .meta-sep {
+  color: var(--gray-300);
 }
 
-.profile-avatar {
-    flex-shrink: 0;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: var(--blue-50);
-    color: var(--blue-600);
-    font-size: 1.375rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1.5px solid var(--blue-100);
+.profile-email-inline {
+  color: var(--gray-700);
 }
 
-.profile-info { flex: 1; }
-
-.profile-username {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 0 0 0.2rem;
-    color: var(--gray-900);
+/* ── Stats bar ──────────────────────────────────────────────── */
+/* ── Stats bar ──────────────────────────────────────────────── */
+.profile-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-100);
+  padding: 24px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.profile-meta {
-    font-size: .8125rem;
-    color: var(--gray-500);
-    margin: 0;
+.profile-stat {
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition);
 }
 
-.meta-sep {
-    margin: 0 0.35rem;
-    opacity: 0.4;
+.profile-stat:hover {
+  box-shadow: var(--shadow-md);
 }
 
-.profile-email {
-    font-size: .8125rem;
-    color: var(--blue-600);
-    margin: 0.2rem 0 0;
-    font-weight: 500;
+.profile-stat-label {
+  font-size: .6875rem;
+  font-weight: 700;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
 }
 
-.profile-actions {
-    margin-left: auto;
-    flex-shrink: 0;
+.profile-stat-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  line-height: 1;
 }
 
-.btn-edit-profile {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 18px;
-    border-radius: var(--radius-md);
-    font-size: .875rem;
-    font-weight: 500;
-    border: 1.5px solid var(--gray-300);
-    background: var(--white);
-    color: var(--gray-700);
-    text-decoration: none;
-    cursor: pointer;
-    transition: all var(--transition);
-    font-family: var(--font-body);
-    white-space: nowrap;
+.profile-stat-suffix {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--gray-500);
+  margin-left: 2px;
 }
 
-.btn-edit-profile:hover {
-    border-color: var(--blue-400);
-    color: var(--blue-600);
-    background: var(--blue-50);
+/* ── Main content ───────────────────────────────────────────── */
+.profile-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 48px;
 }
 
-/* ── Stats ── */
-.profile-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 1.75rem;
+.profile-section-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 18px;
 }
 
-.stat-card {
-    background: var(--white);
-    border: 1px solid rgba(0,0,0,.07);
-    border-radius: var(--radius-lg);
-    padding: 14px 18px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+.profile-section-count {
+  color: var(--gray-500);
+  font-weight: 500;
+  margin-left: 4px;
 }
 
-.stat-value {
-    display: block;
-    font-size: 1.375rem;
-    font-weight: 600;
-    color: var(--blue-800);
-    line-height: 1;
-    margin-bottom: 4px;
-}
-
-.stat-label {
-    font-size: .8125rem;
-    color: var(--gray-500);
-}
-
-/* ── Reviews ── */
-.reviews-heading {
-    font-size: .75rem;
-    font-weight: 600;
-    color: var(--gray-500);
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    margin: 0 0 14px;
-}
-
-.review-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.review-item {
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,.06);
-}
-
-.review-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 0.6rem;
-    flex-wrap: wrap;
-}
-
-.review-unit-link {
-    font-size: .9375rem;
-    font-weight: 600;
-    color: var(--gray-900);
-    text-decoration: none;
-    transition: color var(--transition);
-}
-
-.review-unit-link:hover {
-    color: var(--blue-600);
-}
-
-.review-date {
-    font-size: .8rem;
-    color: var(--gray-500);
-    white-space: nowrap;
-}
-
-.review-ratings {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-}
-
-.rating-badge {
-    font-size: .78rem;
-    background: var(--gray-100);
-    color: var(--gray-700);
-    padding: 0.25rem 0.75rem;
-    border-radius: var(--radius-full);
-    font-weight: 600;
-}
-
-.rating-badge.overall {
-    background: var(--blue-50);
-    color: var(--blue-800);
-}
-
-.rating-badge.secondary {
-    background: var(--gray-100);
-    color: var(--gray-500);
-}
-
-.review-comment {
-    font-size: .95rem;
-    color: #444;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.review-empty {
-    text-align: center;
-    padding: 3rem;
-    color: var(--gray-500);
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 2px 8px rgba(0,0,0,.06);
-    font-size: .9375rem;
-}
-
-.review-empty a {
-    color: var(--blue-600);
-    font-weight: 500;
-}
-
-.review-empty a:hover { text-decoration: underline; }
-
-@media (max-width: 600px) {
-    .profile-card {
-        flex-direction: column;
-        text-align: center;
-        padding: 1.25rem 1rem;
-    }
-    .profile-actions { margin-left: 0; }
-    .review-header { flex-direction: column; gap: 0.2rem; }
-}
-
-/* Unit link inside review card on profile page */
-.review-unit-link-block {
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.review-unit-code-pill {
-    font-size: .75rem;
-    font-weight: 700;
-    color: var(--blue-600);
-    letter-spacing: .04em;
-    text-transform: uppercase;
-}
-
-.review-unit-name-text {
-    font-size: .9375rem;
-    font-weight: 600;
-    color: var(--gray-900);
-}
-
-.review-unit-link-block:hover .review-unit-name-text {
-    color: var(--blue-600);
-}
-
-/* Profile page review card overrides */
-.profile-reviews .review-card {
+/* ── Profile review card overrides ──────────────────────────── */
+.profile-content .review-card {
   padding: 22px 24px;
   margin-bottom: 16px;
 }
 
-.profile-reviews .review-card-header {
+.profile-content .review-card-header {
   align-items: flex-start;
   gap: 16px;
   padding-bottom: 14px;
@@ -317,19 +152,19 @@
   border-bottom: 1px solid var(--gray-100);
 }
 
-.profile-reviews .review-comment {
+.profile-content .review-comment {
   font-size: .9375rem;
   line-height: 1.7;
   color: var(--gray-700);
   margin-bottom: 16px;
 }
 
-.profile-reviews .review-mini-stats {
+.profile-content .review-mini-stats {
   margin-bottom: 14px;
   padding: 12px 16px;
 }
 
-.profile-reviews .review-card-footer {
+.profile-content .review-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -339,10 +174,74 @@
   border-top: 1px solid var(--gray-100);
 }
 
-.profile-reviews .review-date {
+.profile-content .review-date {
   font-variant-numeric: tabular-nums;
 }
 
-.profile-reviews .review-author-meta {
+.profile-content .review-author-meta {
   font-weight: 500;
+}
+
+/* Unit link inside review card */
+.review-unit-link-block {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.review-unit-code-pill {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--blue-600);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.review-unit-name-text {
+  font-size: .9375rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.review-unit-link-block:hover .review-unit-name-text {
+  color: var(--blue-600);
+}
+
+/* ── Empty state ────────────────────────────────────────────── */
+.review-empty {
+  text-align: center;
+  padding: 56px 24px;
+  color: var(--gray-500);
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+}
+
+.review-empty i {
+  font-size: 2.25rem;
+  margin-bottom: 12px;
+  display: block;
+  color: var(--gray-300);
+}
+
+.review-empty p {
+  font-size: .9375rem;
+  margin-bottom: 16px;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .profile-hero { padding: 24px; }
+  .profile-stats-bar { padding: 18px 24px; gap: 16px; }
+  .profile-content { padding: 20px 24px; }
+}
+
+@media (max-width: 600px) {
+  .profile-stats-bar { grid-template-columns: 1fr; }
+  .profile-hero-left { gap: 14px; }
+  .profile-avatar-large { width: 56px; height: 56px; font-size: 1.375rem; }
+  .profile-hero-name { font-size: 1.375rem; }
+  .profile-content .review-card-header { flex-direction: column; gap: 8px; }
+  .profile-content .review-card-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
 }

@@ -36,7 +36,7 @@
       <a href="{{ url_for('main.index') }}" class="ur-nav-link">Browse</a>
       <a href="#" class="ur-nav-link">My reviews</a>
       {% if current_user.is_authenticated %}
-      <a href="{{ url_for('main.saved_units') }}" class="ur-nav-link">Saved</a>
+      <a href="{{ url_for('main.saved_units') }}" class="ur-nav-link">Saved Units</a>
       <span class="ur-nav-link">Hi, {{ current_user.username }}</span>
       <a href="{{ url_for('main.logout') }}" class="ur-btn ur-btn-outline">Log out</a>
       {% else %}

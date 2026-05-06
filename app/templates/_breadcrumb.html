@@ -1,0 +1,15 @@
+{# Reusable breadcrumb partial.
+   Usage: {% include '_breadcrumb.html' with context %}
+   Pass crumbs as a list of (label, url_or_none) tuples in the route. #}
+<nav class="ur-breadcrumb" aria-label="Breadcrumb">
+  {% for label, url in crumbs %}
+    {% if url %}
+      <a href="{{ url }}">{{ label }}</a>
+    {% else %}
+      <span>{{ label }}</span>
+    {% endif %}
+    {% if not loop.last %}
+      <span class="meta-sep">/</span>
+    {% endif %}
+  {% endfor %}
+</nav>

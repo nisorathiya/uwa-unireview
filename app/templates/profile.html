@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="profile-page">
+
+    <nav class="profile-breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ url_for('main.index') }}">Browse</a>
+        <span class="meta-sep">/</span>
+        <span>{{ profile_user.username }}</span>
+    </nav>
+
+    {% if is_own_profile %}
+        <div class="profile-own-banner">
+            <span class="banner-icon">✦</span>
+            This is your profile page. Here you can see all your reviews and stats in one place. Keep sharing your experience to help your fellow students!
+        </div>
+    {% endif %}
+
+    <section class = "profile-card">
+        <div class="profile-avatar" aria-hidden="true">
+            {{profile_user.username[:2].upper()}}
+        </div>
+
+        <div class="profile-info">
+            <h1 class="profile-username">{{ profile_user.username }}</h1>
+            <p class="profile-meta">
+                UWA student
+                <span class="meta-sep">·</span>
+                Joined {{ profile_user.created_at.strftime('%B %Y') if profile_user.created_at else 'recently' }}
+            </p>
+            {% if is_own_profile %}
+            <p class="profile-email">{{ profile_user.email }}</p>
+            {% endif %}
+        </div>
+
+        {% if is_own_profile %}
+        <div class="profile-actions">
+            <a href="{{ url_for('main.edit_profile') }}" class="btn-edit-profile">Edit Profile</a>
+        </div>
+        {% endif %}
+    </section>
+
+    <section class="profile-stats" aria-label="Profile Statistics">
+        <div class="stat-card">
+            <span class="stat-value">{{ total_reviews }}</span>
+            <span class="stat-label">Reviews</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">
+                {% if avg_rating %}{{ avg_rating }}{% else %}N/A{% endif %}
+            </span>
+            <span class="stat-label">Average Rating</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ upvotes_received }}</span>
+            <span class="stat-label">Helpful votes</span>
+        </div>
+    </section>
+
+    <section class="profile-reviews">
+        <h2 class="reviews-heading">
+            {% if is_own_profile %}My reviews{% else %}Reviews by {{ profile_user.username }}{% endif %}
+        </h2>
+
+        {% if reviews %}
+        <ul class="review-list" role="list">
+            {% for review in reviews %}
+            <li class="review-item">
+                <div class="review-header">
+                    <span class="review-unit-link">
+                        {{ review.unit.code }} — {{ review.unit.name }}
+                    </span>
+                    <time class="review-date" datetime="{{ review.created_at.isoformat() if review.created_at else '' }}">
+                        {{ review.created_at.strftime('%d %b %Y') if review.created_at else '' }}
+                    </time>
+                </div>
+
+                <div class="review-ratings">
+                    <span class="rating-badge overall" title="Overall">★ {{ review.overall_rating }}/5</span>
+                    <span class="rating-badge" title="Workload">W: {{ review.workload_rating }}</span>
+                    <span class="rating-badge" title="Difficulty">D: {{ review.difficulty_rating }}</span>
+                    <span class="rating-badge" title="Usefulness">U: {{ review.usefulness_rating }}</span>
+                    {% if review.year_taken %}
+                    <span class="rating-badge secondary" title="Year taken">
+                        {{ review.year_taken }}{% if review.semester %} {{ review.semester }}{% endif %}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <p class="review-comment">{{ review.comment }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="review-empty">
+            <p>
+                {% if is_own_profile %}
+                    You haven't written any reviews yet. Start sharing your experience by reviewing a unit!
+                {% else %}
+                    {{ profile_user.username }} hasn't written any reviews yet.
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+    </section>
+    </div>
+</div>
+{% endblock %}

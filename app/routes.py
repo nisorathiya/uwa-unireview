@@ -229,3 +229,21 @@ def delete_review(review_id):
     db.session.commit()
     flash('Your review has been deleted.', 'info')
     return redirect(url_for('main.unit_detail', code=unit_code))
+
+# Save/unsave a unit
+@main.route('/api/save-unit', methods=['POST'])
+@login_required
+def save_unit():
+    unit_id = request.json.get('unit_id')
+    existing = SavedUnit.query.filter_by(
+        user_id=current_user.id, unit_id=unit_id
+    ).first()
+    if existing:
+        db.session.delete(existing)
+        db.session.commit()
+        return jsonify({'saved': False})
+    else:
+        save = SavedUnit(user_id=current_user.id, unit_id=unit_id)
+        db.session.add(save)
+        db.session.commit()
+        return jsonify({'saved': True})

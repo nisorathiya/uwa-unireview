@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.forms import LoginForm, RegisterForm, ReviewForm
 from app import db
-from app.models import User, Unit, Review
+from app.models import User, Unit, Review, Vote
 
 main = Blueprint('main', __name__)
 
@@ -147,3 +147,85 @@ def unit_detail(code):
                            is_saved=is_saved,
                            similar_units=similar_units,
                            form=form)
+
+# Submit a review
+@main.route('/review/submit', methods=['POST'])
+@login_required
+def submit_review():
+    form = ReviewForm()
+    unit_code = request.form.get('unit_code')
+    unit = Unit.query.filter_by(code=unit_code).first_or_404()
+
+    # Enforce one review per student per unit
+    existing = Review.query.filter_by(
+        unit_id=unit.id, user_id=current_user.id
+    ).first()
+    if existing:
+        flash('You have already reviewed this unit.', 'warning')
+        return redirect(url_for('main.unit_detail', code=unit.code))
+
+    if form.validate_on_submit():
+        review = Review(
+            user_id           = current_user.id,
+            unit_id           = unit.id,
+            overall_rating    = form.overall_rating.data,
+            workload_rating   = form.workload_rating.data,
+            difficulty_rating = form.difficulty_rating.data,
+            usefulness_rating = form.usefulness_rating.data,
+            comment           = form.comment.data,
+            year_taken        = int(request.form.get('year_taken', 2024)),
+            semester          = request.form.get('semester', 'S1')
+        )
+        db.session.add(review)
+        db.session.commit()
+        flash('Your review has been posted!', 'success')
+    else:
+        flash('Please fix the errors in your review.', 'danger')
+
+    return redirect(url_for('main.unit_detail', code=unit.code))
+
+
+# Edit a review
+@main.route('/review/edit/<int:review_id>', methods=['POST'])
+@login_required
+def edit_review(review_id):
+    review = Review.query.get_or_404(review_id)
+
+    # Only the owner can edit
+    if review.user_id != current_user.id:
+        flash('You can only edit your own reviews.', 'danger')
+        return redirect(url_for('main.unit_detail', code=review.unit.code))
+
+    form = ReviewForm()
+    if form.validate_on_submit():
+        review.overall_rating    = form.overall_rating.data
+        review.workload_rating   = form.workload_rating.data
+        review.difficulty_rating = form.difficulty_rating.data
+        review.usefulness_rating = form.usefulness_rating.data
+        review.comment           = form.comment.data
+        db.session.commit()
+        flash('Your review has been updated.', 'success')
+    else:
+        flash('Please fix the errors in your review.', 'danger')
+
+    return redirect(url_for('main.unit_detail', code=review.unit.code))
+
+
+# Delete a review
+@main.route('/review/delete/<int:review_id>', methods=['POST'])
+@login_required
+def delete_review(review_id):
+    review = Review.query.get_or_404(review_id)
+
+    # Only the owner can delete
+    if review.user_id != current_user.id:
+        flash('You can only delete your own reviews.', 'danger')
+        return redirect(url_for('main.unit_detail', code=review.unit.code))
+
+    unit_code = review.unit.code
+    # Delete associated votes first
+    Vote.query.filter_by(review_id=review_id).delete()
+    db.session.delete(review)
+    db.session.commit()
+    flash('Your review has been deleted.', 'info')
+    return redirect(url_for('main.unit_detail', code=unit_code))

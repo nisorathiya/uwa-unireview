@@ -107,12 +107,15 @@
       </div>
 
       <!-- ── Review form (hidden by default) ─────────────── -->
-      {% if current_user.is_authenticated and not user_has_reviewed %}
+      {% if current_user.is_authenticated %}
       <div class="unit-review-form" id="review-form" style="display:none">
-        <h3 class="review-form-title">Your review for {{ unit.code }}</h3>
+        <h3 class="review-form-title" id="review-form-title">Your review for {{ unit.code }}</h3>
 
-        <form method="POST" action="#" novalidate>
+        <form method="POST" action="{{ url_for('main.submit_review') }}"
+        data-submit-url="{{ url_for('main.submit_review') }}"
+        novalidate>
           {{ form.hidden_tag() }}
+          <input type="hidden" name="unit_code" value="{{ unit.code }}">
 
           <!-- Rating sliders -->
           <div class="rating-grid">
@@ -246,7 +249,7 @@
                 <i class="fa-solid fa-pen"></i> Edit
               </button>
               <form method="POST"
-                    action="#"
+                    action="{{ url_for('main.delete_review', review_id=review.id) }}"
                     class="d-inline"
                     onsubmit="return confirm('Delete your review?')">
                 {{ form.hidden_tag() }}

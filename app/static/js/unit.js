@@ -2,10 +2,41 @@
 
 $(document).ready(function () {
 
-    /* ── Toggle review form (delegated handler) ────────────── */
+    /* Toggle review form */
     $(document).on('click', '.js-toggle-review-form', function (e) {
         e.preventDefault();
+        // Reset form to submit (not edit) mode
+        var $form = $('#review-form form');
+        $form.attr('action', $form.data('submit-url'));
+        $('#review-form-title').text('Your review');
         $('#review-form').slideToggle(200);
+    });
+
+    /* Edit review button */
+    $(document).on('click', '.js-edit-review', function () {
+        var reviewId = $(this).data('review-id');
+        var $card    = $('#review-' + reviewId);
+
+        // Read existing values from the review card
+        var overall    = parseInt($card.find('.review-score-badge').text().match(/\d+/)[0]);
+        var miniStats  = $card.find('.review-mini-stat strong');
+        var workload   = parseInt($(miniStats[0]).text());
+        var difficulty = parseInt($(miniStats[1]).text());
+        var usefulness = parseInt($(miniStats[2]).text());
+        var comment    = $card.find('.review-comment').text().trim();
+
+        // Pre-fill the form
+        $('#slider-overall').val(overall);    $('#val-overall').text(overall);
+        $('#slider-workload').val(workload);   $('#val-workload').text(workload);
+        $('#slider-difficulty').val(difficulty); $('#val-difficulty').text(difficulty);
+        $('#slider-usefulness').val(usefulness); $('#val-usefulness').text(usefulness);
+        $('textarea[name="comment"]').val(comment);
+
+        // Change form action to edit endpoint
+        $('#review-form form').attr('action', '/review/edit/' + reviewId);
+        $('#review-form-title').text('Edit your review');
+        $('#review-form').slideDown(200);
+        $('#review-form')[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
     /* ── Vote buttons (upvote / downvote) ──────────────────── */

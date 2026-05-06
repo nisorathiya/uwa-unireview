@@ -128,6 +128,9 @@ def unit_detail(code):
         user_has_reviewed = Review.query.filter_by(
             unit_id=unit.id, user_id=current_user.id
         ).first() is not None
+        is_saved = SavedUnit.query.filter_by(
+            user_id=current_user.id, unit_id=unit.id
+        ).first() is not None
 
     similar_units = Unit.query.filter(
         Unit.faculty == unit.faculty, Unit.id != unit.id

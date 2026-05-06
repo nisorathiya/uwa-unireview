@@ -276,3 +276,73 @@
     .profile-actions { margin-left: 0; }
     .review-header { flex-direction: column; gap: 0.2rem; }
 }
+
+/* Unit link inside review card on profile page */
+.review-unit-link-block {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.review-unit-code-pill {
+    font-size: .75rem;
+    font-weight: 700;
+    color: var(--blue-600);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.review-unit-name-text {
+    font-size: .9375rem;
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.review-unit-link-block:hover .review-unit-name-text {
+    color: var(--blue-600);
+}
+
+/* Profile page review card overrides */
+.profile-reviews .review-card {
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+
+.profile-reviews .review-card-header {
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.profile-reviews .review-comment {
+  font-size: .9375rem;
+  line-height: 1.7;
+  color: var(--gray-700);
+  margin-bottom: 16px;
+}
+
+.profile-reviews .review-mini-stats {
+  margin-bottom: 14px;
+  padding: 12px 16px;
+}
+
+.profile-reviews .review-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .75rem;
+  color: var(--gray-500);
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-100);
+}
+
+.profile-reviews .review-date {
+  font-variant-numeric: tabular-nums;
+}
+
+.profile-reviews .review-author-meta {
+  font-weight: 500;
+}

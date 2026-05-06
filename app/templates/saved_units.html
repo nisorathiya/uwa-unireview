@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="saved-units-page">
+    <h1>My Saved Units</h1>
+    {% if units %}
+        <div class="unit-grid">
+            {% for unit in units %}
+            <a href="{{ url_for('main.unit_detail', code=unit.code) }}" class="ur-unit-card">
+                <div class="ur-unit-code">{{ unit.code }}</div>
+                <div class="ur-unit-name">{{ unit.name }}</div>
+                <div class="ur-unit-faculty">{{ unit.faculty }}</div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven't saved any units yet. <a href="{{ url_for('main.index') }}">Browse units</a></p>
+    {% endif %}
+</div>
+{% endblock %}

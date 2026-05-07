@@ -3,7 +3,7 @@
 $(document).ready(function () {
 
     var activeFilter = 'all';
-    var searchTimer  = null;
+    var searchTimer = null;
 
     /* ── Score pill helper ─────────────────────────────────── */
     function scorePill(val) {
@@ -13,10 +13,10 @@ $(document).ready(function () {
 
     /* ── Workload pill helper ──────────────────────────────── */
     function workloadPill(val) {
-        var cls   = val >= 3.8 ? 'score-high' : val >= 3.0 ? 'score-mid' : 'score-low';
-        var label = val >= 3.8 ? 'Light load'  : val >= 3.0 ? 'Moderate'   : 'Heavy load';
-        return '<span class="score-pill ' + cls + '">' + label + '</span>';
-    }
+    var cls   = val >= 3.8 ? 'score-low'   : val >= 3.0 ? 'score-mid' : 'score-high';
+    var label = val >= 3.8 ? 'Heavy load'  : val >= 3.0 ? 'Moderate'   : 'Light load';
+    return '<span class="score-pill ' + cls + '">' + label + '</span>';
+}
 
     /* ── Render unit cards ─────────────────────────────────── */
     function renderUnits(units) {
@@ -37,19 +37,26 @@ $(document).ready(function () {
 
         $.each(units, function (i, u) {
             var facultyLabel = u.faculty.charAt(0).toUpperCase() + u.faculty.slice(1);
+            var hasReviews = u.reviews > 0;
+
+            var scoresHtml = hasReviews
+                ? scorePill(u.overall) + workloadPill(u.workload)
+                : '<span class="score-pill score-none">No reviews yet</span>';
+
+            var reviewsText = hasReviews
+                ? u.reviews + ' review' + (u.reviews !== 1 ? 's' : '')
+                : 'Be the first to review';
+
             var card =
                 '<a href="/unit/' + u.code + '" class="ur-unit-card">' +
-                  '<div class="ur-unit-code">' + u.code + '</div>' +
-                  '<div class="ur-unit-name">'  + u.name + '</div>' +
-                  '<div class="ur-unit-faculty">' + facultyLabel + '</div>' +
-                  '<div class="ur-unit-scores">' +
-                    scorePill(u.overall) +
-                    workloadPill(u.workload) +
-                  '</div>' +
-                  '<div class="ur-unit-footer">' +
-                    '<span class="ur-unit-reviews">' + u.reviews + ' reviews</span>' +
-                    '<span class="ur-unit-arrow">&#8594;</span>' +
-                  '</div>' +
+                '<div class="ur-unit-code">' + u.code + '</div>' +
+                '<div class="ur-unit-name">' + u.name + '</div>' +
+                '<div class="ur-unit-faculty">' + facultyLabel + '</div>' +
+                '<div class="ur-unit-scores">' + scoresHtml + '</div>' +
+                '<div class="ur-unit-footer">' +
+                '<span class="ur-unit-reviews">' + reviewsText + '</span>' +
+                '<span class="ur-unit-arrow">&#8594;</span>' +
+                '</div>' +
                 '</a>';
             $grid.append(card);
         });

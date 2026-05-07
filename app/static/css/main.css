@@ -204,3 +204,9 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 960px) {
   .ur-breadcrumb { padding: 12px 24px; }
 }
+
+.score-pill.score-none {
+    background: var(--gray-100);
+    color: var(--gray-500);
+    font-size: x-small;
+}

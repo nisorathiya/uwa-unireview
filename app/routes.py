@@ -9,8 +9,16 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    # return '<h1>UWA UniReview - server is running</h1>'
-    return render_template('dashboard.html', title='Browse Units')
+    total_units   = Unit.query.count()
+    total_reviews = Review.query.count()
+    avg_score     = db.session.query(db.func.avg(Review.overall_rating)).scalar()
+    avg_score     = round(avg_score, 1) if avg_score else 0
+
+    return render_template('dashboard.html',
+                           title='Browse Units',
+                           total_units=total_units,
+                           total_reviews=total_reviews,
+                           avg_score=avg_score)
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
@@ -305,4 +313,4 @@ def profile(username):
                            total_reviews=total_reviews,
                            avg_rating=avg_rating,
                            upvotes_received=upvotes_received,
-                           is_own_profile=is_own_profile) 
+                           is_own_profile=is_own_profile)

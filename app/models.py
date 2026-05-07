@@ -41,17 +41,24 @@ class Unit(db.Model):
     reviews  = db.relationship('Review',    backref='unit', lazy=True)
     saved_by = db.relationship('SavedUnit', backref='unit', lazy=True)
 
-    # to_dict() method for easy JSON serialization
     def to_dict(self):
+        review_count = len(self.reviews)
+        if review_count > 0:
+            avg_overall  = round(sum(r.overall_rating  for r in self.reviews) / review_count, 1)
+            avg_workload = round(sum(r.workload_rating for r in self.reviews) / review_count, 1)
+        else:
+            avg_overall  = 0
+            avg_workload = 0
+
         return {
             'id':            self.id,
             'code':          self.code,
             'name':          self.name,
             'faculty':       self.faculty,
             'credit_points': self.credit_points,
-            'overall':       0,
-            'workload':      0,
-            'reviews':       0
+            'overall':       avg_overall,
+            'workload':      avg_workload,
+            'reviews':       review_count
         }
         
     def __repr__(self):

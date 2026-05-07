@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.forms import LoginForm, RegisterForm, ReviewForm
 from app import db
-from app.models import User, Unit, Review, Vote
+from app.models import User, Unit, Review, Vote, SavedUnit
 
 main = Blueprint('main', __name__)
 
@@ -128,6 +128,9 @@ def unit_detail(code):
         user_has_reviewed = Review.query.filter_by(
             unit_id=unit.id, user_id=current_user.id
         ).first() is not None
+        is_saved = SavedUnit.query.filter_by(
+            user_id=current_user.id, unit_id=unit.id
+        ).first() is not None
 
     similar_units = Unit.query.filter(
         Unit.faculty == unit.faculty, Unit.id != unit.id
@@ -230,6 +233,34 @@ def delete_review(review_id):
     flash('Your review has been deleted.', 'info')
     return redirect(url_for('main.unit_detail', code=unit_code))
 
+# Save/unsave a unit (AJAX)
+@main.route('/api/save-unit', methods=['POST'])
+@login_required
+def save_unit():
+    unit_id = request.json.get('unit_id')
+    if not unit_id:
+        return jsonify({'error': 'unit_id is required'}), 400
+    Unit.query.get_or_404(unit_id)
+    existing = SavedUnit.query.filter_by(
+        user_id=current_user.id, unit_id=unit_id
+    ).first()
+    if existing:
+        db.session.delete(existing)
+        db.session.commit()
+        return jsonify({'saved': False})
+    else:
+        save = SavedUnit(user_id=current_user.id, unit_id=unit_id)
+        db.session.add(save)
+        db.session.commit()
+        return jsonify({'saved': True})
+
+# Saved units page
+@main.route('/saved-units')
+@login_required
+def saved_units():
+    saved = SavedUnit.query.filter_by(user_id=current_user.id).all()
+    units = [s.unit for s in saved]
+    return render_template('saved_units.html', units=units)
 
 @main.route('/profile/edit')
 @login_required

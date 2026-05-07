@@ -142,12 +142,6 @@ a { color: inherit; text-decoration: none; }
 .score-mid  { background: var(--amber-50); color: #633806; }
 .score-low  { background: var(--red-50);   color: var(--red-600); }
 
-.score-pill.score-none {
-    background: var(--gray-100);
-    color: var(--gray-500);
-    font-size: x-small;
-}
-
 /* ─── Form elements ──────────────────────────────────────────── */
 .form-group { margin-bottom: 16px; }
 
@@ -209,4 +203,10 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 960px) {
   .ur-breadcrumb { padding: 12px 24px; }
+}
+
+.score-pill.score-none {
+    background: var(--gray-100);
+    color: var(--gray-500);
+    font-size: x-small;
 }

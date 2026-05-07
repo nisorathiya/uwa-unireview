@@ -7,11 +7,6 @@ from app.models import User, Unit, Review, Vote, SavedUnit
 
 main = Blueprint('main', __name__)
 
-# @main.route('/')
-# def index():
-#     # return '<h1>UWA UniReview - server is running</h1>'
-#     return render_template('dashboard.html', title='Browse Units')
-
 @main.route('/')
 def index():
     total_units   = Unit.query.count()
@@ -318,4 +313,4 @@ def profile(username):
                            total_reviews=total_reviews,
                            avg_rating=avg_rating,
                            upvotes_received=upvotes_received,
-                           is_own_profile=is_own_profile) 
+                           is_own_profile=is_own_profile)

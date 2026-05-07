@@ -7,12 +7,14 @@ $(document).ready(function () {
 
     /* ── Score pill helper ─────────────────────────────────── */
     function scorePill(val) {
+        if (!val || val === 0) return '<span class="score-pill score-none">No reviews yet</span>';
         var cls = val >= 4.2 ? 'score-high' : val >= 3.5 ? 'score-mid' : 'score-low';
         return '<span class="score-pill ' + cls + '">&#9733; ' + val.toFixed(1) + '</span>';
     }
 
     /* ── Workload pill helper ──────────────────────────────── */
     function workloadPill(val) {
+        if (!val || val === 0) return '';
         var cls   = val >= 3.8 ? 'score-high' : val >= 3.0 ? 'score-mid' : 'score-low';
         var label = val >= 3.8 ? 'Light load'  : val >= 3.0 ? 'Moderate'   : 'Heavy load';
         return '<span class="score-pill ' + cls + '">' + label + '</span>';
@@ -47,7 +49,7 @@ $(document).ready(function () {
                     workloadPill(u.workload) +
                   '</div>' +
                   '<div class="ur-unit-footer">' +
-                    '<span class="ur-unit-reviews">' + u.reviews + ' reviews</span>' +
+                    '<span class="ur-unit-reviews">' + (u.reviews > 0 ? u.reviews + ' review' + (u.reviews !== 1 ? 's' : '') : 'Be the first to review') + '</span>' +
                     '<span class="ur-unit-arrow">&#8594;</span>' +
                   '</div>' +
                 '</a>';

@@ -2,6 +2,8 @@
 # models.py
 # Database models for UWA UniReview.
 
+from itertools import count
+
 from app import db
 from datetime import datetime
 from flask_login import UserMixin
@@ -43,20 +45,26 @@ class Unit(db.Model):
 
     # to_dict() method for easy JSON serialization
     def to_dict(self):
+        count = len(self.reviews)
+        if count > 0:
+            avg_overall  = round(sum(r.overall_rating  for r in self.reviews) / count, 1)
+            avg_workload = round(sum(r.workload_rating for r in self.reviews) / count, 1)
+        else:
+            avg_overall  = 0
+            avg_workload = 0
         return {
             'id':            self.id,
             'code':          self.code,
             'name':          self.name,
             'faculty':       self.faculty,
             'credit_points': self.credit_points,
-            'overall':       0,
-            'workload':      0,
-            'reviews':       0
+            'overall':       avg_overall,
+            'workload':      avg_workload,
+            'reviews':       count
         }
         
     def __repr__(self):
         return f'<Unit {self.code}>'
-
 
 class Review(db.Model):
     __tablename__ = 'reviews'

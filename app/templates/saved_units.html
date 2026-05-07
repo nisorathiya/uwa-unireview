@@ -1,31 +1,56 @@
 {% extends "base.html" %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/saved.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="saved-page-header">
-    <h1 class="saved-page-title">My Saved Units</h1>
-    <p class="saved-page-subtitle">Units you have bookmarked for later</p>
-</div>
+<div class="saved-page">
 
-{% if units %}
-<div class="saved-units-grid">
-    {% for unit in units %}
-    <a href="{{ url_for('main.unit_detail', code=unit.code) }}" class="saved-unit-card">
-        <div class="saved-unit-code">{{ unit.code }}</div>
-        <div class="saved-unit-name">{{ unit.name }}</div>
-        <div class="saved-unit-faculty">{{ unit.faculty }}</div>
-    </a>
-    {% endfor %}
-</div>
-{% else %}
-<div class="saved-empty">
-    <i class="fa-regular fa-bookmark"></i>
-    <p>You haven't saved any units yet.</p>
-    <a href="{{ url_for('main.index') }}" class="ur-btn ur-btn-primary">Browse units</a>
-</div>
-{% endif %}
+  {% set crumbs = [
+    ('Browse', url_for('main.index')),
+    ('Saved units', None)
+  ] %}
+  {% include '_breadcrumb.html' %}
 
+  <div class="saved-hero">
+    <h1 class="saved-hero-name">My saved units</h1>
+    <p class="saved-hero-meta">
+      {% if units %}
+        {{ units|length }} unit{{ 's' if units|length != 1 }} bookmarked for later
+      {% else %}
+        Nothing saved yet
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="saved-content">
+
+    {% if units %}
+      <div class="ur-unit-grid">
+        {% for unit in units %}
+        <a href="{{ url_for('main.unit_detail', code=unit.code) }}" class="ur-unit-card">
+          <div class="ur-unit-code">{{ unit.code }}</div>
+          <div class="ur-unit-name">{{ unit.name }}</div>
+          <div class="ur-unit-faculty">{{ unit.faculty }}</div>
+          <div class="ur-unit-footer">
+            <span class="ur-unit-reviews">
+              {{ unit.reviews|length }} review{{ 's' if unit.reviews|length != 1 }}
+            </span>
+            <span class="ur-unit-arrow">&#8594;</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="review-empty">
+        <i class="fa-regular fa-bookmark"></i>
+        <p>You haven't saved any units yet.</p>
+        <a href="{{ url_for('main.index') }}" class="ur-btn ur-btn-primary">Browse units</a>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
 {% endblock %}

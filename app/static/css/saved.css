@@ -1,0 +1,61 @@
+/* ─── Saved units page ───────────────────────────────────────── */
+
+.saved-page {
+  padding-bottom: 4rem;
+}
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.saved-hero {
+  padding: 36px 48px 28px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.saved-hero-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0 0 4px;
+  line-height: 1.25;
+}
+
+.saved-hero-meta {
+  margin: 0;
+  font-size: .875rem;
+  color: var(--gray-500);
+}
+
+/* ── Content area ───────────────────────────────────────────── */
+.saved-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 48px;
+}
+
+/* ── Empty state (matches profile page pattern) ─────────────── */
+.review-empty {
+  text-align: center;
+  padding: 56px 24px;
+  color: var(--gray-500);
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+}
+
+.review-empty i {
+  font-size: 2.25rem;
+  margin-bottom: 12px;
+  display: block;
+  color: var(--gray-300);
+}
+
+.review-empty p {
+  font-size: .9375rem;
+  margin-bottom: 16px;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .saved-hero    { padding: 24px; }
+  .saved-content { padding: 20px 24px; }
+}

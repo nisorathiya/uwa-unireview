@@ -436,3 +436,15 @@
   .review-card-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
   .unit-hero-name     { font-size: 1.375rem; }
 }
+
+.review-author-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.review-author-link:hover .review-author-name {
+    color: var(--blue-600);
+}

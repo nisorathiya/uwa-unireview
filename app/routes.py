@@ -238,6 +238,9 @@ def delete_review(review_id):
 @login_required
 def save_unit():
     unit_id = request.json.get('unit_id')
+    if not unit_id:
+        return jsonify({'error': 'unit_id is required'}), 400
+    Unit.query.get_or_404(unit_id)
     existing = SavedUnit.query.filter_by(
         user_id=current_user.id, unit_id=unit_id
     ).first()

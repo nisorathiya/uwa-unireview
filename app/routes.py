@@ -126,8 +126,14 @@ def unit_detail(code):
 
     # attach vote info to each review (zeros for now until vote route exists)
     for r in reviews_raw:
-        r.upvotes   = 0
-        r.downvotes = 0
+        r.upvotes   = Vote.query.filter_by(review_id=r.id, value=1).count()
+        r.downvotes = Vote.query.filter_by(review_id=r.id, value=-1).count()
+        if current_user.is_authenticated:
+            user_vote   = Vote.query.filter_by(
+                review_id=r.id, user_id=current_user.id
+            ).first()
+            r.user_vote = user_vote.value if user_vote else None
+    else:
         r.user_vote = None
 
     user_has_reviewed = False

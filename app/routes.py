@@ -314,3 +314,44 @@ def profile(username):
                            avg_rating=avg_rating,
                            upvotes_received=upvotes_received,
                            is_own_profile=is_own_profile)
+
+@main.route('/api/vote', methods=['POST'])
+@login_required
+def vote():
+    data      = request.get_json()
+    review_id = request.json.get('review_id')
+    value     = request.json.get('value')  # +1 for upvote, -1 for downvote
+
+    if value not in [1, -1]:
+        return jsonify({'error': 'Invalid vote value'}), 400
+
+    review = Review.query.get_or_404(review_id)
+
+    # Prevent users from voting on their own reviews
+    if review.user_id == current_user.id:
+        return jsonify({'error': 'You cannot vote on your own review'}), 403
+
+    # Check if user has already voted on this review
+    existing_vote = Vote.query.filter_by(
+        user_id=current_user.id, review_id=review_id
+    ).first()
+
+    if existing_vote:
+        if existing_vote.value == value:
+            db.session.delete(existing_vote)
+            status = 'removed'
+        else:
+            existing_vote.value = value
+            status = 'updated'
+    else:
+        new_vote = Vote(user_id=current_user.id, review_id=review_id, value=value)
+        db.session.add(new_vote)
+        status = 'added'
+
+    db.session.commit()
+    
+    # Return updated counts
+    upvotes   = Vote.query.filter_by(review_id=review_id, value=1).count()
+    downvotes = Vote.query.filter_by(review_id=review_id, value=-1).count()
+
+    return jsonify({'upvotes': upvotes, 'downvotes': downvotes})

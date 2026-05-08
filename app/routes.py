@@ -321,6 +321,8 @@ def profile(username):
                            upvotes_received=upvotes_received,
                            is_own_profile=is_own_profile)
 
+# API endpoint to handle upvoting/downvoting reviews
+
 @main.route('/api/vote', methods=['POST'])
 @login_required
 def vote():
@@ -328,6 +330,7 @@ def vote():
     review_id = request.json.get('review_id')
     value     = request.json.get('value')  # +1 for upvote, -1 for downvote
 
+    # Basic validation to ensure review_id and value are present and valid
     if value not in [1, -1]:
         return jsonify({'error': 'Invalid vote value'}), 400
 
@@ -342,6 +345,7 @@ def vote():
         user_id=current_user.id, review_id=review_id
     ).first()
 
+    # If the same vote exists, remove it (toggle off). If a different vote exists, update it. Otherwise, create a new vote.
     if existing_vote:
         if existing_vote.value == value:
             db.session.delete(existing_vote)

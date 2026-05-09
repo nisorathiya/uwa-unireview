@@ -93,5 +93,34 @@ $(document).ready(function () {
             }
         });
     });
-
+/* ── Rating distribution chart ─────────────────────────── */
+    var $canvas = $('#rating-dist-chart');
+    if ($canvas.length) {
+        var dist = JSON.parse($canvas.attr('data-dist'));
+        new Chart($canvas[0], {
+            type: 'bar',
+            data: {
+                labels: ['1★', '2★', '3★', '4★', '5★'],
+                datasets: [{
+                    data: dist,
+                    backgroundColor: 'rgba(37, 99, 235, 0.15)',
+                    borderColor:     'rgba(37, 99, 235, 1)',
+                    borderWidth: 1.5,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, precision: 0 },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    }
 });

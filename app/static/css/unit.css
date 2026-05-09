@@ -419,6 +419,12 @@
 
 .sidebar-empty { font-size: .875rem; color: var(--gray-500); }
 
+/* ── Rating distribution chart ──────────────────────────────── */
+#rating-dist-chart {
+  width: 100% !important;
+  max-height: 200px;
+}
+
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 960px) {
   .unit-hero       { padding: 24px; flex-direction: column; }

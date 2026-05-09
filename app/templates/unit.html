@@ -299,18 +299,13 @@
         </div>
       </div>
 
-      {% if review_count > 0 %}
+    {% if review_count > 0 %}
       <div class="sidebar-card">
-        <div class="sidebar-card-title">Rating breakdown</div>
-        {% for label, val in [('Overall', avg_overall), ('Workload', avg_workload), ('Difficulty', avg_difficulty), ('Usefulness', avg_usefulness)] %}
-        <div class="sidebar-rating-row">
-          <span class="sidebar-rating-label">{{ label }}</span>
-          <div class="sidebar-rating-bar-track">
-            <div class="sidebar-rating-bar-fill" style="width: {{ (val / 5 * 100)|round }}%"></div>
-          </div>
-          <span class="sidebar-rating-val">{{ val }}</span>
-        </div>
-        {% endfor %}
+        <div class="sidebar-card-title">Rating distribution</div>
+        <canvas id="rating-dist-chart"
+                data-dist="{{ overall_rating_dist | tojson }}"
+                height="160">
+        </canvas>
       </div>
       {% endif %}
 
@@ -335,5 +330,6 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="{{ url_for('static', filename='js/unit.js') }}"></script>
 {% endblock %}

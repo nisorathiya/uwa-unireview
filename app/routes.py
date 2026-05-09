@@ -327,11 +327,11 @@ def profile(username):
 @login_required
 def vote():
     data      = request.get_json()
-    review_id = request.json.get('review_id')
-    value     = request.json.get('value')  # +1 for upvote, -1 for downvote
+    review_id = data.get('review_id')
+    value     = data.get('value')  # +1 for upvote, -1 for downvote
 
     # Basic validation to ensure review_id and value are present and valid
-    if value not in [1, -1]:
+    if value not in [1, -1, 0]:
         return jsonify({'error': 'Invalid vote value'}), 400
 
     review = Review.query.get_or_404(review_id)
@@ -347,7 +347,7 @@ def vote():
 
     # If the same vote exists, remove it (toggle off). If a different vote exists, update it. Otherwise, create a new vote.
     if existing_vote:
-        if existing_vote.value == value:
+        if existing_vote.value == value or value == 0:  # Toggle off if same vote or if explicitly setting to 0
             db.session.delete(existing_vote)
             status = 'removed'
         else:

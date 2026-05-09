@@ -365,3 +365,9 @@ def vote():
     downvotes = Vote.query.filter_by(review_id=review_id, value=-1).count()
 
     return jsonify({'upvotes': upvotes, 'downvotes': downvotes})
+
+
+# favicon route to prevent 404 errors in logs
+@main.route('/favicon.ico')
+def favicon():
+    return '', 204

@@ -125,10 +125,16 @@ def unit_detail(code):
         avg_overall = avg_workload = avg_difficulty = avg_usefulness = 0
 
     # attach vote info to each review (zeros for now until vote route exists)
-    for r in reviews_raw:
-        r.upvotes   = 0
-        r.downvotes = 0
-        r.user_vote = None
+    for review in reviews_raw:
+        review.upvotes   = Vote.query.filter_by(review_id=review.id, value=1).count()
+        review.downvotes = Vote.query.filter_by(review_id=review.id, value=-1).count()
+        if current_user.is_authenticated:
+            user_vote   = Vote.query.filter_by(
+                review_id=review.id, user_id=current_user.id
+            ).first()
+            review.user_vote = user_vote.value if user_vote else None
+        else:
+            review.user_vote = None
 
     user_has_reviewed = False
     is_saved = False
@@ -314,3 +320,48 @@ def profile(username):
                            avg_rating=avg_rating,
                            upvotes_received=upvotes_received,
                            is_own_profile=is_own_profile)
+
+# API endpoint to handle upvoting/downvoting reviews
+
+@main.route('/api/vote', methods=['POST'])
+@login_required
+def vote():
+    data      = request.get_json()
+    review_id = data.get('review_id')
+    value     = data.get('value')  # +1 for upvote, -1 for downvote
+
+    # Basic validation to ensure review_id and value are present and valid
+    if value not in [1, -1, 0]:
+        return jsonify({'error': 'Invalid vote value'}), 400
+
+    review = Review.query.get_or_404(review_id)
+
+    # Prevent users from voting on their own reviews
+    if review.user_id == current_user.id:
+        return jsonify({'error': 'You cannot vote on your own review'}), 403
+
+    # Check if user has already voted on this review
+    existing_vote = Vote.query.filter_by(
+        user_id=current_user.id, review_id=review_id
+    ).first()
+
+    # If the same vote exists, remove it (toggle off). If a different vote exists, update it. Otherwise, create a new vote.
+    if existing_vote:
+        if existing_vote.value == value or value == 0:  # Toggle off if same vote or if explicitly setting to 0
+            db.session.delete(existing_vote)
+            status = 'removed'
+        else:
+            existing_vote.value = value
+            status = 'updated'
+    else:
+        new_vote = Vote(user_id=current_user.id, review_id=review_id, value=value)
+        db.session.add(new_vote)
+        status = 'added'
+
+    db.session.commit()
+    
+    # Return updated counts
+    upvotes   = Vote.query.filter_by(review_id=review_id, value=1).count()
+    downvotes = Vote.query.filter_by(review_id=review_id, value=-1).count()
+
+    return jsonify({'upvotes': upvotes, 'downvotes': downvotes})

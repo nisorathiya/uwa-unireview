@@ -1,4 +1,10 @@
-# run this script to clear all reviews and votes from the database
+"""
+Dev utility script — wipes all reviews and votes from the database.
+Used during development for testing fresh-state scenarios.
+NOT for production use.
+
+Run: python3 scripts/clear_reviews.py
+"""
 from app import db, create_app
 from app.models import Review, Vote
 

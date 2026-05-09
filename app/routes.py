@@ -125,16 +125,16 @@ def unit_detail(code):
         avg_overall = avg_workload = avg_difficulty = avg_usefulness = 0
 
     # attach vote info to each review (zeros for now until vote route exists)
-    for r in reviews_raw:
-        r.upvotes   = Vote.query.filter_by(review_id=r.id, value=1).count()
-        r.downvotes = Vote.query.filter_by(review_id=r.id, value=-1).count()
+    for review in reviews_raw:
+        review.upvotes   = Vote.query.filter_by(review_id=review.id, value=1).count()
+        review.downvotes = Vote.query.filter_by(review_id=review.id, value=-1).count()
         if current_user.is_authenticated:
             user_vote   = Vote.query.filter_by(
-                review_id=r.id, user_id=current_user.id
+                review_id=review.id, user_id=current_user.id
             ).first()
-            r.user_vote = user_vote.value if user_vote else None
-    else:
-        r.user_vote = None
+            review.user_vote = user_vote.value if user_vote else None
+        else:
+            review.user_vote = None
 
     user_has_reviewed = False
     is_saved = False

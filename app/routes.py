@@ -151,7 +151,7 @@ def unit_detail(code):
     ).limit(4).all()
 
     # Count reviews per star value (1–5) for the Chart.js bar chart
-    rating_dist = [
+    overall_rating_dist = [
         sum(1 for r in reviews_raw if r.overall_rating is not None and r.overall_rating == star)
         for star in range(1, 6)
     ]
@@ -169,7 +169,7 @@ def unit_detail(code):
                            user_has_reviewed=user_has_reviewed,
                            is_saved=is_saved,
                            similar_units=similar_units,
-                           rating_dist=rating_dist,
+                           overall_rating_dist=overall_rating_dist,
                            form=form)
 
 # Submit a review

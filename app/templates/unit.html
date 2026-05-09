@@ -303,7 +303,7 @@
       <div class="sidebar-card">
         <div class="sidebar-card-title">Rating distribution</div>
         <canvas id="rating-dist-chart"
-                data-dist="{{ rating_dist | tojson }}"
+                data-dist="{{ overall_rating_dist | tojson }}"
                 height="160">
         </canvas>
       </div>
@@ -330,5 +330,6 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="{{ url_for('static', filename='js/unit.js') }}"></script>
 {% endblock %}

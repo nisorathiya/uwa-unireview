@@ -165,9 +165,18 @@ uwa-unireview/
 │   ├── forms.py               # WTForms validation classes
 │   ├── templates/             # VIEWS — Jinja2 HTML templates
 │   └── static/                # VIEWS — CSS, JavaScript, images
+├── tests/
+│   ├── conftest.py            # Shared pytest fixtures
+│   ├── test_auth.py           # Unit tests for auth routes
+│   ├── test_reviews.py        # Unit tests for review routes
+│   ├── test_api.py            # Unit tests for API endpoints
+│   └── selenium/
+│       ├── conftest.py        # Selenium fixtures (live server, driver)
+│       └── test_user_flow.py  # Selenium WebDriver tests
 ├── migrations/                # Alembic migration scripts
 ├── instance/                  # SQLite database (gitignored)
 ├── docs/                      # Documentation
+├── scripts/                   # Dev utility scripts
 ├── config.py                  # App configuration
 ├── run.py                     # Entry point
 └── seed.py                    # Database seed script

@@ -147,6 +147,12 @@ Open **http://localhost:5000** in your browser.
 
 ## How to Run the Tests
 
+## How to Run the Tests
+
+### Unit tests
+```bash
+pytest tests/ -v --ignore=tests/selenium
+```
 
 ## Project Structure
 

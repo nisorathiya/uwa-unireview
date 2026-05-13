@@ -1,4 +1,4 @@
-"""Unit tests for review routes — submit, edit, delete."""
+# unit tests for review submission, editing, and deletion
 from app import db
 from app.models import Review, Unit, User, Vote
 

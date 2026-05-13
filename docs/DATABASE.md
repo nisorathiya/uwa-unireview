@@ -167,7 +167,7 @@ The database is populated with 32 real UWA units using the seed script:
 ```bash
 python seed.py
 ```
-The scripts are safe to run multiple times, it checks for existing unit codes before inserting and skips duplicates.
+
 
 **Faculties covered:**
 
@@ -187,6 +187,7 @@ python seed_reviews.py
 ```
 This creates 15 dummy student accounts and seeds 10–15 reviews per unit with randomised ratings.
 
+The scripts are safe to run multiple times, it checks for existing data before inserting and skips duplicates.
 ---
 
 ## Models

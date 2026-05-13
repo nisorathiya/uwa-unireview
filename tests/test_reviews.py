@@ -1,4 +1,18 @@
 # unit tests for review submission, editing, and deletion
+# These tests cover:
+# - Submitting a review (success, validation, duplicates)
+# - Editing a review (success, permissions, validation)
+# - Deleting a review (success, permissions, cascading delete of votes)
+
+# corner cases like:
+# - Submitting a review for a non-existent unit
+# - Editing/deleting a review that doesn't exist
+# - Ensuring only the review owner can edit/delete their review
+# - deleting a review also deletes associated votes
+
+# Note: these tests assume the existence of a test user and a unit in the test database.
+
+
 from app import db
 from app.models import Review, Unit, User, Vote
 

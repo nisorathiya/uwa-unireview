@@ -67,14 +67,16 @@ def test_submit_review_invalid_unit(auth_client):
 
 def test_submit_review_comment_too_short(auth_client, app):
     """Comment under 20 characters should be rejected — review not saved."""
-    submit_review(auth_client, comment='Too short')
+    response = submit_review(auth_client, comment='Too short')
+    assert b'20 characters' in response.data
     with app.app_context():
         assert Review.query.count() == 0
 
 
 def test_submit_review_invalid_rating(auth_client, app):
     """Rating outside 1-5 should be rejected — review not saved."""
-    submit_review(auth_client, overall=6)
+    response = submit_review(auth_client, overall=6)
+    assert b'fix the errors' in response.data
     with app.app_context():
         assert Review.query.count() == 0
 
@@ -100,11 +102,25 @@ def test_edit_review_success(auth_client, app):
         assert updated.comment == 'Updated review comment here.'
 
 
-def test_edit_review_requires_login(client, auth_client, app):
+def test_edit_review_requires_login(client, app, test_user):
     """Unauthenticated user cannot edit a review."""
-    submit_review(auth_client)
     with app.app_context():
-        review_id = Review.query.first().id
+        user = User.query.filter_by(email='testuser@student.uwa.edu.au').first()
+        unit = Unit.query.filter_by(code='CITS3403').first()
+        review = Review(
+            user_id           = user.id,
+            unit_id           = unit.id,
+            overall_rating    = 4,
+            workload_rating   = 3,
+            difficulty_rating = 3,
+            usefulness_rating = 4,
+            comment           = 'Test review comment here.',
+            year_taken        = 2024,
+            semester          = 'S1'
+        )
+        db.session.add(review)
+        db.session.commit()
+        review_id = review.id
 
     response = client.post(f'/review/edit/{review_id}', data={
         'overall_rating'   : 5,
@@ -113,10 +129,11 @@ def test_edit_review_requires_login(client, auth_client, app):
         'usefulness_rating': 5,
         'comment'          : 'Hacked review.'
     }, follow_redirects=True)
-    # review should NOT be updated
+
+    assert b'Log in' in response.data
     with app.app_context():
         review = Review.query.filter_by(id=review_id).first()
-        assert review.overall_rating != 5
+        assert review.overall_rating == 4
 
 
 def test_edit_review_wrong_user_rejected(client, auth_client, app):

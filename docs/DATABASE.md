@@ -185,9 +185,14 @@ To populate the database with dummy review data for testing and demo purposes:
 ```bash
 python seed_reviews.py
 ```
-This creates 15 dummy student accounts and seeds 10–15 reviews per unit with randomised ratings.
+The script creates 15 dummy student accounts with UWA email addresses and seeds 10–15 reviews per unit. It is safe to run multiple times — it skips users and reviews that already exist.
 
-The scripts are safe to run multiple times, it checks for existing data before inserting and skips duplicates.
+**How the seed data is generated:**
+
+- Ratings are correlated — overall rating drives the other scores with realistic noise. High overall ratings tend toward lower workload/difficulty and higher usefulness.
+- Comments are grouped into positive, neutral, and negative buckets matched to the overall rating. Faculty-specific comments are used 60% of the time where available.
+- Year taken is biased toward recent years (2024–2025).
+- Overall rating distribution is biased positive, clustering around 4–5 stars to reflect real review site behaviour.
 ---
 
 ## Models

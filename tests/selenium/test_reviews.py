@@ -113,3 +113,113 @@ def test_logged_in_user_can_save_unit(logged_in_driver, live_server):
     )
     assert 'Saved' in save_btn.text, \
         'Save state should persist across page reload'
+
+
+def test_user_can_edit_their_own_review(logged_in_driver, live_server, seed_helper):
+    """A user can edit their own existing review and the updated text appears
+    on the page after submission."""
+
+    driver = logged_in_driver
+
+    # Look up the logged-in user's ID rather than hardcoding it, so the test
+    # doesn't break if the seed order in conftest changes later.
+    seleniumuser_id = seed_helper.get_user_id('seleniumuser')
+
+    # Seed an existing review by seleniumuser so we have something to edit.
+    seed_helper.add_review(
+        user_id=seleniumuser_id,
+        unit_code='CITS3403',
+        overall=3,
+        comment='Original review text before any edits are applied.',
+    )
+
+    driver.get(f'{live_server}/unit/CITS3403')
+
+    # The Edit button is only shown to the review author.
+    edit_btn = WebDriverWait(driver, 5).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, '.js-edit-review'))
+    )
+    edit_btn.click()
+
+    # Clicking edit pre-fills the form, shows it, and changes the action URL.
+    WebDriverWait(driver, 5).until(
+        EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, '#review-form textarea[name="comment"]')
+        )
+    )
+
+    # Replace the comment with new text.
+    new_comment = 'Updated review text after editing — much more detail now.'
+    comment_box = driver.find_element(
+        By.CSS_SELECTOR, '#review-form textarea[name="comment"]'
+    )
+    comment_box.clear()
+    comment_box.send_keys(new_comment)
+
+    # Move the overall slider too, so we exercise an actual edit not just text.
+    _set_slider_value(driver, 'slider-overall', 5)
+
+    # Submit using JS click (sticky navbar makes coordinate clicks unreliable).
+    submit_btn = driver.find_element(
+        By.CSS_SELECTOR, '#review-form button[type="submit"]'
+    )
+    driver.execute_script('arguments[0].click();', submit_btn)
+
+    # After redirect, the updated comment should be on the page and the
+    # original should be gone.
+    WebDriverWait(driver, 5).until(
+        EC.text_to_be_present_in_element((By.TAG_NAME, 'body'), new_comment)
+    )
+    body_text = driver.find_element(By.TAG_NAME, 'body').text
+    assert new_comment in body_text, 'Updated comment should be visible'
+    assert 'Original review text' not in body_text, \
+        'Original comment should have been replaced'
+
+
+def test_user_can_upvote_another_users_review(logged_in_driver, live_server, seed_helper):
+    """A user can upvote another user's review — the count increments via
+    AJAX and the button gains the active state."""
+
+    driver = logged_in_driver
+
+    # Seed a different user and have them write the review we'll vote on.
+    other_user_id = seed_helper.add_user(
+        username='otherstudent',
+        email='otherstudent@student.uwa.edu.au',
+    )
+    seed_helper.add_review(
+        user_id=other_user_id,
+        unit_code='CITS3403',
+        overall=4,
+        comment='A review by another student that we will upvote in this test.',
+    )
+
+    driver.get(f'{live_server}/unit/CITS3403')
+
+    # Locate the upvote (data-value="1") button on the seeded review.
+    upvote_btn = WebDriverWait(driver, 5).until(
+        EC.element_to_be_clickable(
+            (By.CSS_SELECTOR, '.js-vote[data-value="1"]')
+        )
+    )
+
+    # Initial count should be 0.
+    initial_count = upvote_btn.find_element(By.CSS_SELECTOR, '.vote-count').text
+    assert initial_count == '0', \
+        f'Expected initial upvote count to be 0, got {initial_count!r}'
+
+    # Click via JS to avoid any sticky-navbar interception (same reasoning as
+    # the review-submit test).
+    driver.execute_script('arguments[0].click();', upvote_btn)
+
+    # Wait for the AJAX response to update the count to 1.
+    WebDriverWait(driver, 5).until(
+        lambda d: d.find_element(
+            By.CSS_SELECTOR, '.js-vote[data-value="1"] .vote-count'
+        ).text == '1'
+    )
+
+    # The button should now be marked active.
+    upvote_btn = driver.find_element(By.CSS_SELECTOR, '.js-vote[data-value="1"]')
+    assert upvote_btn.get_attribute('data-active') == 'true', \
+        'Upvote button should have data-active="true" after clicking'

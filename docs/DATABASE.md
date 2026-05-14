@@ -168,7 +168,6 @@ The database is populated with 32 real UWA units using the seed script:
 python seed.py
 ```
 
-The script is safe to run multiple times, it checks for existing unit codes before inserting and skips duplicates.
 
 **Faculties covered:**
 
@@ -181,6 +180,20 @@ The script is safe to run multiple times, it checks for existing unit codes befo
 | Arts | 4 |
 
 ---
+To populate the database with dummy review data for testing and demo purposes:
+
+```bash
+python seed_reviews.py
+```
+The script creates 15 dummy student accounts with UWA email addresses and seeds 10–15 reviews per unit. It is safe to run multiple times — it skips users and reviews that already exist.
+
+**How the seed data is generated:**
+
+- Ratings are correlated — overall rating drives the other scores with realistic noise. High overall ratings tend toward lower workload/difficulty and higher usefulness.
+- Comments are grouped into positive, neutral, and negative buckets matched to the overall rating. Faculty-specific comments are used 60% of the time where available.
+- Year taken is biased toward recent years (2024–2025).
+- Overall rating distribution is biased positive, clustering around 4–5 stars to reflect real review site behaviour.
+---
 
 ## Models
 
@@ -190,15 +203,23 @@ The `Unit` model exposes a `to_dict()` method for JSON serialisation, used by th
 
 ```python
 def to_dict(self):
+    review_count = len(self.reviews)
+    if review_count > 0:
+        avg_overall  = round(sum(r.overall_rating  for r in self.reviews) / review_count, 1)
+        avg_workload = round(sum(r.workload_rating for r in self.reviews) / review_count, 1)
+    else:
+        avg_overall  = 0
+        avg_workload = 0
+
     return {
         'id':            self.id,
         'code':          self.code,
         'name':          self.name,
         'faculty':       self.faculty,
         'credit_points': self.credit_points,
-        'overall':       0,   # placeholder until reviews exist
-        'workload':      0,   # placeholder until reviews exist
-        'reviews':       0    # placeholder until reviews exist
+        'overall':       avg_overall,
+        'workload':      avg_workload,
+        'reviews':       review_count
     }
 ```
 

@@ -147,41 +147,88 @@ Open **http://localhost:5000** in your browser.
 
 ## How to Run the Tests
 
-## How to Run the Tests
+The project has two layers of tests: unit tests that hit Flask directly via
+the test client (fast, no browser), and Selenium tests that drive a real
+Chrome browser against a live Flask server (slower, more realistic).
 
-### Unit tests
+### Prerequisites for Selenium tests
+
+Selenium tests require Google Chrome installed on your machine.
+ChromeDriver is downloaded automatically by `webdriver-manager` on first
+run, so no manual driver setup is needed.
+
+### Unit tests (38 tests)
+
+Tests for Flask routes, models, forms, and API endpoints. Runs in under
+10 seconds with no browser required.
+
 ```bash
 pytest tests/ -v --ignore=tests/selenium
 ```
+
+### Selenium WebDriver tests (5 tests)
+
+End-to-end tests that drive a real Chrome browser against a live Flask
+server. Each test resets the database and seeds known fixtures, so tests
+are fully isolated and can be run in any order.
+
+```bash
+# Run headless (default)
+pytest tests/selenium -v
+
+# Run with a visible browser window
+HEADLESS=0 pytest tests/selenium -v
+```
+
+The Selenium suite covers:
+
+| File | Test | What it covers |
+|---|---|---|
+| `test_user_flow.py` | `test_register_login_logout_flow` | Full auth journey — register, dashboard redirect, logout, log back in |
+| `test_search.py` | `test_search_filters_units_by_keyword` | AJAX search (`/api/search`) with jQuery debounce |
+| `test_search.py` | `test_faculty_filter_pill_narrows_results` | Faculty filter pills + AJAX card re-render |
+| `test_reviews.py` | `test_logged_in_user_can_submit_review` | Review form (sliders + textarea) submission and rendering |
+| `test_reviews.py` | `test_logged_in_user_can_save_unit` | AJAX save-unit toggle and persistence across page reload |
+
+### Run all tests at once
+
+```bash
+pytest tests/ -v
+```
+
+---
 
 ## Project Structure
 
 ```
 uwa-unireview/
 ├── app/
-│   ├── __init__.py            # App factory and extension setup
-│   ├── models.py              # MODELS — SQLAlchemy database models
-│   ├── routes.py              # CONTROLLERS — HTTP request handlers
-│   ├── forms.py               # WTForms validation classes
-│   ├── templates/             # VIEWS — Jinja2 HTML templates
-│   └── static/                # VIEWS — CSS, JavaScript, images
+│   ├── __init__.py              # App factory and extension setup
+│   ├── models.py                # MODELS — SQLAlchemy database models
+│   ├── routes.py                # CONTROLLERS — HTTP request handlers
+│   ├── forms.py                 # WTForms validation classes
+│   ├── templates/               # VIEWS — Jinja2 HTML templates
+│   └── static/                  # VIEWS — CSS, JavaScript, images
 ├── tests/
-│   ├── conftest.py            # Shared pytest fixtures
-│   ├── test_auth.py           # Unit tests for auth routes
-│   ├── test_reviews.py        # Unit tests for review routes
-│   ├── test_api.py            # Unit tests for API endpoints
+│   ├── conftest.py              # Shared pytest fixtures (test client, DB)
+│   ├── test_auth.py             # Unit tests for auth routes
+│   ├── test_reviews.py          # Unit tests for review routes
+│   ├── test_api_saves.py        # Unit tests for save-unit API endpoint
 │   └── selenium/
-│       ├── conftest.py        # Selenium fixtures (live server, driver)
-│       └── test_user_flow.py  # Selenium WebDriver tests
-├── migrations/                # Alembic migration scripts
-├── instance/                  # SQLite database (gitignored)
-├── docs/                      # Documentation
-├── scripts/                   # Dev utility scripts
-├── config.py                  # App configuration
-├── run.py                     # Entry point
-└── seed.py                    # Database seed script
+│       ├── conftest.py          # Selenium fixtures (live server, driver, DB reset)
+│       ├── test_user_flow.py    # Register → login → logout flow
+│       ├── test_search.py       # Dashboard search and filter
+│       └── test_reviews.py      # Review submission and save-unit
+├── migrations/                  # Alembic migration scripts
+├── instance/                    # SQLite database (gitignored)
+├── docs/                        # Documentation
+├── scripts/                     # Dev utility scripts
+├── config.py                    # App configuration (incl. TestConfig)
+├── run.py                       # Entry point
+└── seed.py                      # Database seed script
 ```
 
+---
 
 ## Database
 

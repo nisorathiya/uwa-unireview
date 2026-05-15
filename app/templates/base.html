@@ -47,32 +47,33 @@
   </nav>
   {% endblock %}
 
-  <!-- Flash messages -->
-  {% block flash_messages %}
-  {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-  <div class="ur-flash-wrapper">
-    {% for category, message in messages %}
-    <div class="ur-flash ur-flash-{{ category }}">
-      {{ message }}
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-  {% endwith %}
-  {% endblock %}
-
   <!-- Page content -->
   {% block content %}{% endblock %}
 
-  <!-- jQuery -->
+  <!-- jQuery (must load before flash.js and page scripts) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Reusable flash/toast component — used by both server-side flashes and JS -->
+  <script src="{{ url_for('static', filename='js/flash.js') }}"></script>
+
   <!-- Shared JS -->
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+  <!-- Render any server-side flash messages as toasts on page load -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      {% for category, message in messages %}
+      window.showFlash({{ message| tojson }}, {{ category| tojson }});
+    {% endfor %}
+        });
+  </script>
+  {% endif %}
+  {% endwith %}
 
   <!-- Page-specific JS -->
   {% block extra_js %}{% endblock %}

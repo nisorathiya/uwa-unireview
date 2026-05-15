@@ -83,9 +83,9 @@ def test_login_with_wrong_password_shows_error(driver, live_server):
     login_form.find_element(By.NAME, 'password').send_keys('definitely-not-the-right-password')
     login_form.find_element(By.CSS_SELECTOR, 'input[type="submit"]').click()
 
-    # Wait for the flash alert that the login route renders on failure.
+    # Wait for the toast that the login route renders on failure.
     WebDriverWait(driver, 5).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, '.auth-alert-danger'))
+        EC.visibility_of_element_located((By.CSS_SELECTOR, '.ur-toast-danger'))
     )
 
     # Should still be on /login (no redirect on failed login).
@@ -93,6 +93,6 @@ def test_login_with_wrong_password_shows_error(driver, live_server):
         f'Expected to remain on /login after wrong password, got: {driver.current_url}'
 
     # The error message text should mention invalid credentials.
-    alert_text = driver.find_element(By.CSS_SELECTOR, '.auth-alert-danger').text
+    alert_text = driver.find_element(By.CSS_SELECTOR, '.ur-toast-danger').text
     assert 'Invalid email or password' in alert_text, \
-        f'Expected "Invalid email or password" alert, got: {alert_text!r}'
+        f'Expected "Invalid email or password" toast, got: {alert_text!r}'

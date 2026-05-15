@@ -4,8 +4,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
 
-{% block flash_messages %}{% endblock %}
-
 {% block navbar %}{% endblock %}
 
 {% block content %}
@@ -75,14 +73,6 @@
   <!-- ── Right panel ────────────────────────────── -->
   <div class="login-right">
     <div class="auth-box">
-
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message in messages %}
-            <div class="auth-alert auth-alert-{{ category }}">{{ message }}</div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
 
       <h1 class="auth-heading" id="auth-heading">
         {% if show_register %}Create an account{% else %}Welcome back{% endif %}

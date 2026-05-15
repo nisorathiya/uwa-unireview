@@ -159,7 +159,7 @@
             <label class="form-label">Your review</label>
             <textarea name="comment" class="form-control review-textarea"
                       placeholder="Share your honest experience — what did you learn, how was the workload, any tips for future students?"
-                      rows="4" required minlength="20"></textarea>
+                      rows="4"></textarea>
             <div class="form-hint">Minimum 20 characters.</div>
           </div>
 
@@ -253,8 +253,7 @@
               </button>
               <form method="POST"
                     action="{{ url_for('main.delete_review', review_id=review.id) }}"
-                    class="d-inline"
-                    onsubmit="return confirm('Delete your review?')">
+                    class="d-inline js-delete-review-form">
                 {{ form.hidden_tag() }}
                 <button type="submit" class="review-action-btn review-action-delete">
                   <i class="fa-solid fa-trash"></i> Delete

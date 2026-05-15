@@ -22,7 +22,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 from app import create_app, db
-from app.models import User, Unit
+from app.models import User, Unit, Review
 from config import TestConfig
 from werkzeug.security import generate_password_hash
 
@@ -189,3 +189,53 @@ def logged_in_driver(driver, live_server):
         EC.presence_of_element_located((By.ID, 'search-input'))
     )
     return driver
+
+
+# ─── Helper: seed extra data inside the test ──────────────────────────────
+@pytest.fixture
+def seed_helper(_app):
+    """Returns helper functions tests can call to seed extra data
+    (additional users, reviews, etc.) into the per-test DB."""
+
+    def add_user(username, email, password='password123'):
+        with _app.app_context():
+            u = User(
+                username=username,
+                email=email,
+                password_hash=generate_password_hash(password),
+            )
+            db.session.add(u)
+            db.session.commit()
+            return u.id
+
+    def add_review(user_id, unit_code, overall=4, workload=3,
+                   difficulty=3, usefulness=4,
+                   comment='A solid unit with helpful content for students.',
+                   year=2024, semester='S1'):
+        with _app.app_context():
+            unit = Unit.query.filter_by(code=unit_code).first()
+            r = Review(
+                user_id=user_id,
+                unit_id=unit.id,
+                overall_rating=overall,
+                workload_rating=workload,
+                difficulty_rating=difficulty,
+                usefulness_rating=usefulness,
+                comment=comment,
+                year_taken=year,
+                semester=semester,
+            )
+            db.session.add(r)
+            db.session.commit()
+            return r.id
+
+    def get_user_id(username):
+        with _app.app_context():
+            u = User.query.filter_by(username=username).first()
+            return u.id if u else None
+
+    return type('SeedHelper', (), {
+        'add_user': staticmethod(add_user),
+        'add_review': staticmethod(add_review),
+        'get_user_id': staticmethod(get_user_id),
+    })

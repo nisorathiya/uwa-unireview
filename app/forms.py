@@ -1,3 +1,5 @@
+"""WTForms classes for login, registration, and review submission."""
+
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, ValidationError, Optional

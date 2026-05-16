@@ -1,3 +1,5 @@
+"""Application configuration — base config plus a TestConfig variant."""
+
 import os
 
 class Config:

@@ -1,5 +1,5 @@
 """
-Dev utility script — wipes all reviews and votes from the database.
+Dev utility script: wipes all reviews and votes from the database.
 Used during development for testing fresh-state scenarios.
 NOT for production use.
 

@@ -1,4 +1,5 @@
 """Unit tests for authentication routes — register, login, logout."""
+
 from app import db
 from app.models import User
 from werkzeug.security import check_password_hash

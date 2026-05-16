@@ -1,4 +1,4 @@
-# seed.py
+"""Seed the database with the initial set of UWA units."""
 
 from app import create_app, db
 from app.models import Unit

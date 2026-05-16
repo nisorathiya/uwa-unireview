@@ -2,6 +2,7 @@
 Shared pytest fixtures for unit tests.
 Provides a test app and client with an isolated in-memory database.
 """
+
 import pytest
 from app import create_app, db
 from app.models import User, Unit

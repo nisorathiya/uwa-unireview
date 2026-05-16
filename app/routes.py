@@ -1,3 +1,11 @@
+"""
+Application routes for UWA UniReview.
+
+Defines all HTTP endpoints — auth (login, register, logout), unit
+browsing and search, review CRUD, voting, and saved units. All routes
+are registered on the `main` blueprint.
+"""
+
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,8 +15,10 @@ from app.models import User, Unit, Review, Vote, SavedUnit
 
 main = Blueprint('main', __name__)
 
+
 @main.route('/')
 def index():
+    """Dashboard / home page — shows unit grid with aggregated stats."""
     total_units   = Unit.query.count()
     total_reviews = Review.query.count()
     avg_score     = db.session.query(db.func.avg(Review.overall_rating)).scalar()
@@ -20,8 +30,10 @@ def index():
                            total_reviews=total_reviews,
                            avg_score=avg_score)
 
+
 @main.route('/login', methods=['GET', 'POST'])
 def login():
+    """Render the login page; handle login form submission."""
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 
@@ -45,8 +57,10 @@ def login():
                            register_form=register_form,
                            show_register=show_register)
 
+
 @main.route('/register', methods=['POST'])
 def register():
+    """Handle sign-up form submission; redirect to dashboard on success."""
     login_form    = LoginForm()
     register_form = RegisterForm()
 
@@ -79,15 +93,19 @@ def register():
                            register_form=register_form,
                            show_register=True)
 
+
 @main.route('/logout')
 @login_required
 def logout():
+    """Log the current user out and redirect to the login page."""
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('main.login'))
 
+
 @main.route('/api/search')
 def search():
+    """AJAX endpoint — return units filtered by keyword and faculty."""
     q       = request.args.get('q', '').strip()
     faculty = request.args.get('faculty', '').strip()
 
@@ -106,7 +124,8 @@ def search():
 
     units = query.all()
     return jsonify([u.to_dict() for u in units])      
-        
+
+
 @main.route('/unit/<code>')
 def unit_detail(code):
     """Fetch unit by code and render the unit detail page."""
@@ -149,7 +168,6 @@ def unit_detail(code):
         Unit.faculty == unit.faculty, Unit.id != unit.id
     ).limit(4).all()
 
-    # Count reviews per star value (1–5) for the Chart.js bar chart
     overall_rating_dist = [
         sum(1 for r in reviews_raw if r.overall_rating is not None and r.overall_rating == star)
         for star in range(1, 6)
@@ -171,15 +189,15 @@ def unit_detail(code):
                            overall_rating_dist=overall_rating_dist,
                            form=form)
 
-# Submit a review
+
 @main.route('/review/submit', methods=['POST'])
 @login_required
 def submit_review():
+    """Create a new review for a unit. One review per user per unit."""
     form = ReviewForm()
     unit_code = request.form.get('unit_code')
     unit = Unit.query.filter_by(code=unit_code).first_or_404()
 
-    # Enforce one review per student per unit
     existing = Review.query.filter_by(
         unit_id=unit.id, user_id=current_user.id
     ).first()
@@ -208,13 +226,12 @@ def submit_review():
     return redirect(url_for('main.unit_detail', code=unit.code))
 
 
-# Edit a review
 @main.route('/review/edit/<int:review_id>', methods=['POST'])
 @login_required
 def edit_review(review_id):
+    """Update an existing review. Only the review's author can edit it."""
     review = Review.query.get_or_404(review_id)
 
-    # Only the owner can edit
     if review.user_id != current_user.id:
         flash('You can only edit your own reviews.', 'danger')
         return redirect(url_for('main.unit_detail', code=review.unit.code))
@@ -234,29 +251,28 @@ def edit_review(review_id):
     return redirect(url_for('main.unit_detail', code=review.unit.code))
 
 
-# Delete a review
 @main.route('/review/delete/<int:review_id>', methods=['POST'])
 @login_required
 def delete_review(review_id):
+    """Delete a review and its associated votes. Author-only."""
     review = Review.query.get_or_404(review_id)
 
-    # Only the owner can delete
     if review.user_id != current_user.id:
         flash('You can only delete your own reviews.', 'danger')
         return redirect(url_for('main.unit_detail', code=review.unit.code))
 
     unit_code = review.unit.code
-    # Delete associated votes first
     Vote.query.filter_by(review_id=review_id).delete()
     db.session.delete(review)
     db.session.commit()
     flash('Your review has been deleted.', 'info')
     return redirect(url_for('main.unit_detail', code=unit_code))
 
-# Save/unsave a unit (AJAX)
+
 @main.route('/api/save-unit', methods=['POST'])
 @login_required
 def save_unit():
+    """AJAX endpoint — toggle saved/unsaved state for a unit."""
     unit_id = request.json.get('unit_id')
     if not unit_id:
         return jsonify({'error': 'unit_id is required'}), 400
@@ -274,27 +290,29 @@ def save_unit():
         db.session.commit()
         return jsonify({'saved': True})
 
-# Saved units page
+
 @main.route('/saved-units')
 @login_required
 def saved_units():
+    """Render the current user's list of saved (bookmarked) units."""
     saved = SavedUnit.query.filter_by(user_id=current_user.id).all()
     units = [s.unit for s in saved]
     return render_template('saved_units.html', units=units)
 
+
 @main.route('/profile/edit')
 @login_required
 def edit_profile():
+    """Placeholder — profile editing is not yet implemented."""
     flash('Edit profile coming soon.', 'info')
     return redirect(url_for('main.profile', username=current_user.username))
 
+
 @main.route('/profile/<username>')
 def profile(username):
-    """Display user profile page with their reviews and stats.
-    """
+    """Display user profile page with their reviews and stats."""
     profile_user = User.query.filter_by(username=username).first_or_404()
     
-    # All reviews by this user, newest first, with their unit eagerly available
     reviews = (
         Review.query
         .filter_by(user_id=profile_user.id)
@@ -302,7 +320,6 @@ def profile(username):
         .all()
     )
     
-    # Stats
     total_reviews = len(reviews)
     if total_reviews:
         avg_rating = round(sum(r.overall_rating for r in reviews) / total_reviews, 1)
@@ -327,13 +344,14 @@ def profile(username):
                            upvotes_received=upvotes_received,
                            is_own_profile=is_own_profile)
 
-# API endpoint to handle upvoting/downvoting reviews
+
 @main.route('/api/vote', methods=['POST'])
 @login_required
 def vote():
+    """AJAX endpoint — register, change, or remove an upvote/downvote."""
     data      = request.get_json()
     review_id = data.get('review_id')
-    value     = data.get('value')  # +1 for upvote, -1 for downvote
+    value     = data.get('value')
 
     if value not in [1, -1, 0]:
         return jsonify({'error': 'Invalid vote value'}), 400
@@ -367,7 +385,7 @@ def vote():
     return jsonify({'upvotes': upvotes, 'downvotes': downvotes})
 
 
-# favicon route to prevent 404 errors in logs
 @main.route('/favicon.ico')
 def favicon():
+    """Empty 204 response so browsers stop logging favicon 404s."""
     return '', 204

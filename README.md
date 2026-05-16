@@ -4,6 +4,25 @@ A student-driven web application where UWA students can see and share honest rev
 
 ---
 
+## Screenshots
+
+### Login page
+A welcome landing page experience with unit review previews as social proof.
+
+![Login page](docs/screenshots/login.png)
+
+### Dashboard
+Search and filter UWA units by faculty, with rating and workload signals at a glance.
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Unit detail
+Multi-dimensional aggregated ratings, distribution chart, similar units browsing, and reviews from verified students.
+
+![Unit detail](docs/screenshots/unit-detail.png)
+
+---
+
 ## Team
 
 | UWA ID | Full Name | GitHub Username | Role |

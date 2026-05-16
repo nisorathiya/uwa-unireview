@@ -1,10 +1,10 @@
-/* ─── main.js — shared across all pages ──────────────────────── */
+/**
+ * main.js — shared client-side helpers used across every page.
+ *
+ * Loaded on every page via base.html. Currently empty — page-specific
+ * scripts live in dashboard.js, unit.js, login.js, and flash.js.
+ */
 
 $(document).ready(function () {
-
-    /* Auto-dismiss flash messages after 4 seconds */
-    setTimeout(function () {
-        $('.ur-flash').fadeOut(400);
-    }, 4000);
-
+    // Reserved for future shared behavior.
 });

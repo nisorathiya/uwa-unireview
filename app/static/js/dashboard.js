@@ -1,4 +1,11 @@
-/* ─── dashboard.js ───────────────────────────────────────────── */
+/**
+ * dashboard.js — interactivity for the dashboard / browse page.
+ *
+ * Handles:
+ *   - AJAX search against /api/search (220ms debounce)
+ *   - Faculty filter pills
+ *   - Rendering unit cards with score and workload pills
+ */
 
 $(document).ready(function () {
 
@@ -13,9 +20,9 @@ $(document).ready(function () {
 
     /* ── Workload pill helper ──────────────────────────────── */
     function workloadPill(val) {
-    var cls   = val >= 3.8 ? 'score-low'   : val >= 3.0 ? 'score-mid' : 'score-high';
-    var label = val >= 3.8 ? 'Heavy load'  : val >= 3.0 ? 'Moderate'   : 'Light load';
-    return '<span class="score-pill ' + cls + '">' + label + '</span>';
+        var cls   = val >= 3.8 ? 'score-low'   : val >= 3.0 ? 'score-mid' : 'score-high';
+        var label = val >= 3.8 ? 'Heavy load'  : val >= 3.0 ? 'Moderate'   : 'Light load';
+        return '<span class="score-pill ' + cls + '">' + label + '</span>';
 }
 
     /* ── Render unit cards ─────────────────────────────────── */

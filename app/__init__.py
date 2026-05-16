@@ -7,11 +7,9 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import Config
 
-db      = SQLAlchemy()
+db = SQLAlchemy()
 migrate = Migrate()
-login_manager   = LoginManager()
-
-# Initialise extensions (without binding to an app yet)
+login_manager = LoginManager()
 csrf = CSRFProtect()
 
 def create_app(config_class=Config):
@@ -34,8 +32,9 @@ def create_app(config_class=Config):
     from app.routes import main
     app.register_blueprint(main)
 
+    # Import models so SQLAlchemy/migrate registers them. Required even if unused locally.
     from app import models
-    
+
     return app
 
 

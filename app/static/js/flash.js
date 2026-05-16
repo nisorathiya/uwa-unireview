@@ -82,7 +82,7 @@
   /**
    * Show a confirmation modal. Returns a Promise that resolves to
    * true (confirmed) or false (cancelled).
-   * Used by the delete-review flow in Step 6.
+   * Used by the delete-review flow.
    */
   window.showConfirm = function (opts) {
     opts = opts || {};

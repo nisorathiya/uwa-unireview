@@ -68,7 +68,6 @@
 }
 
 /* ── Stats bar ──────────────────────────────────────────────── */
-/* ── Stats bar ──────────────────────────────────────────────── */
 .profile-stats-bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

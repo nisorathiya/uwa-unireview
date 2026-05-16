@@ -297,4 +297,4 @@ For full schema details and ER diagram, see [`docs/DATABASE.md`](docs/DATABASE.m
 
 ## License
 
-Academic project for CITS3403 Agile Web Development at the University of Western Australia.
+Academic project for CITS5505 Agile Web Development at the University of Western Australia.

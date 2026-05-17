@@ -144,7 +144,7 @@ venv\Scripts\activate
 
 ### 3. Install dependencies
 ```bash
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 ### 4. Initialise the database
@@ -161,7 +161,14 @@ python3 seed.py
 
 The script is safe to run multiple times — it skips units that already exist.
 
-### 6. Run the server
+### 6. Seed sample reviews
+```bash
+python3 seed_reviews.py
+```
+
+This adds sample reviews to the seeded units. Required for review counts, faculty filter pills, and rating displays to appear on the dashboard.
+
+### 7. Run the server
 ```bash
 python3 run.py
 ```

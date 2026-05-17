@@ -173,7 +173,9 @@ This adds sample reviews to the seeded units. Required for review counts, facult
 python3 run.py
 ```
 
-Open **http://localhost:5000** in your browser.
+Flask will print the URL it's running on (usually [http://localhost:5000](http://localhost:5000)). Open it in your browser you should see the UniReview dashboard.
+
+**macOS note:** If you see `Address already in use`, port 5000 is taken by AirPlay Receiver. Disable it in System Settings → General → AirDrop & Handoff → AirPlay Receiver, then re-run.
 
 ## How to Run the Tests
 

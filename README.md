@@ -251,6 +251,7 @@ uwa-unireview/
 ├── instance/                    # SQLite database (gitignored)
 ├── docs/
 │   ├── DATABASE.md              # Database schema documentation
+│   ├── TESTS.md                 # Testing documentation and test case reference
 │   ├── UserStories.md           # User stories (planning)
 │   ├── wireframes.md            # Wireframe documentation
 │   ├── about-uwa-unireview.md   # Project background

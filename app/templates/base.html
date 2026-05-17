@@ -64,15 +64,15 @@
 
   <!-- Render any server-side flash messages as toasts on page load -->
   {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      {% for category, message in messages %}
-      window.showFlash({{ message| tojson }}, {{ category| tojson }});
-    {% endfor %}
+    {% if messages %}
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          {% for category, message in messages %}
+            window.showFlash({{ message|tojson }}, {{ category|tojson }});
+          {% endfor %}
         });
-  </script>
-  {% endif %}
+      </script>
+    {% endif %}
   {% endwith %}
 
   <!-- Page-specific JS -->

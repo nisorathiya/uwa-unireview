@@ -1,3 +1,5 @@
+"""Seed the database with dummy users and reviews for development/testing."""
+
 import random
 from app import create_app, db
 from app.models import User, Unit, Review

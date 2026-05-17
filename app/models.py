@@ -1,6 +1,4 @@
-# ─────────────────────────────────────────────────────────────
-# models.py
-# Database models for UWA UniReview.
+"""SQLAlchemy database models for UWA UniReview."""
 
 from app import db
 from datetime import datetime

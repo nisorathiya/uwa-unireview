@@ -4,6 +4,25 @@ A student-driven web application where UWA students can see and share honest rev
 
 ---
 
+## Screenshots
+
+### Login page
+A welcome landing page experience with unit review previews as social proof.
+
+![Login page](docs/screenshots/login.png)
+
+### Dashboard
+Search and filter UWA units by faculty, with rating and workload signals at a glance.
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Unit detail
+Multi-dimensional aggregated ratings, distribution chart, similar units browsing, and reviews from verified students.
+
+![Unit detail](docs/screenshots/unit-detail.png)
+
+---
+
 ## Team
 
 | UWA ID | Full Name | GitHub Username | Role |
@@ -17,7 +36,7 @@ A student-driven web application where UWA students can see and share honest rev
 
 ## Purpose and Design
 
-UniReview helps UWA students discover what they are actually signing up for when choosing units. Course handbooks describe the syllabus, but they don't tell you whether the workload is reasonable, whether the lecturer is engaging, or whether the assessment/group project is fair. UniReview fills that gap- students review units they already completed and future students benefit from the collective knowledge.
+UniReview helps UWA students discover what they are actually signing up for when choosing units. Course handbooks describe the syllabus, but they don't tell you whether the workload is reasonable, whether the lecturer is engaging, or whether the assessment/group project is fair. UniReview fills that gap - students review units they already completed and future students benefit from the collective knowledge.
 
 **Key design principles:**
 - **Honest** — reviews are written by verified UWA students using their `@student.uwa.edu.au` email
@@ -67,6 +86,11 @@ UniReview helps UWA students discover what they are actually signing up for when
 - Full list of reviews by that user with links to the units
 - Email visible only on own profile
 
+**Notifications**
+- Reusable toast component for all server-side flash messages and client-side AJAX feedback
+- Styled confirmation modal replaces native `confirm()` dialogs for destructive actions
+- All HTML5 native popups replaced with styled toasts for a consistent design language
+
 ---
 
 ## Technology Stack
@@ -79,7 +103,7 @@ UniReview helps UWA students discover what they are actually signing up for when
 | Authentication | Flask-Login + werkzeug password hashing |
 | Forms/CSRF | Flask-WTF + WTForms |
 | Templating | Jinja2 |
-| Frontend CSS | Bootstrap 5 + custom CSS |
+| Frontend CSS | Custom CSS with design tokens, Bootstrap 5 utility classes |
 | Frontend JS | jQuery + AJAX |
 | Charts | Chart.js (loaded via CDN, only on unit detail page) |
 | Icons | Font Awesome 6 |
@@ -135,7 +159,7 @@ This creates `instance/unireview.db` with all required tables.
 python3 seed.py
 ```
 
-The script is safe to run multiple times— it skips units that already exists.
+The script is safe to run multiple times — it skips units that already exist.
 
 ### 6. Run the server
 ```bash
@@ -184,7 +208,7 @@ The Selenium suite covers:
 | File | Test | What it covers |
 |---|---|---|
 | `test_user_flow.py` | `test_register_login_logout_flow` | Full auth journey — register, dashboard redirect, logout, log back in |
-| `test_user_flow.py` | `test_login_with_wrong_password_shows_error` | Negative auth — wrong password keeps user on /login with error alert |
+| `test_user_flow.py` | `test_login_with_wrong_password_shows_error` | Negative auth — wrong password keeps user on /login with error toast |
 | `test_search.py` | `test_search_filters_units_by_keyword` | AJAX search (`/api/search`) with jQuery debounce |
 | `test_search.py` | `test_faculty_filter_pill_narrows_results` | Faculty filter pills + AJAX card re-render |
 | `test_reviews.py` | `test_logged_in_user_can_submit_review` | Review form (sliders + textarea) submission and rendering |
@@ -210,7 +234,9 @@ uwa-unireview/
 │   ├── routes.py                # CONTROLLERS — HTTP request handlers
 │   ├── forms.py                 # WTForms validation classes
 │   ├── templates/               # VIEWS — Jinja2 HTML templates
-│   └── static/                  # VIEWS — CSS, JavaScript, images
+│   └── static/
+│       ├── css/                 # Custom CSS with design tokens
+│       └── js/                  # jQuery + custom JS (flash, search, unit, etc.)
 ├── tests/
 │   ├── conftest.py              # Shared pytest fixtures (test client, DB)
 │   ├── test_auth.py             # Unit tests for auth routes
@@ -223,11 +249,23 @@ uwa-unireview/
 │       └── test_reviews.py      # Review submission, editing, save-unit, voting
 ├── migrations/                  # Alembic migration scripts
 ├── instance/                    # SQLite database (gitignored)
-├── docs/                        # Documentation
-├── scripts/                     # Dev utility scripts
+├── docs/
+│   ├── DATABASE.md              # Database schema documentation
+│   ├── UserStories.md           # User stories (planning)
+│   ├── wireframes.md            # Wireframe documentation
+│   ├── about-uwa-unireview.md   # Project background
+│   ├── database-img/            # ER diagram and schema images
+│   ├── wireframes-img/          # Wireframe screenshots
+│   ├── meeting-minutes/         # Weekly team meeting notes
+│   └── screenshots/             # App screenshots used in this README
+├── scripts/
+│   └── clear_reviews.py         # Dev utility to wipe reviews from DB
 ├── config.py                    # App configuration (incl. TestConfig)
 ├── run.py                       # Entry point
-└── seed.py                      # Database seed script
+├── seed.py                      # Seeds units into the database
+├── seed_reviews.py              # Seeds dummy reviews (for development/testing)
+├── requirements.txt             # Python dependencies
+└── README.md                    # This file
 ```
 
 ---
@@ -259,4 +297,4 @@ For full schema details and ER diagram, see [`docs/DATABASE.md`](docs/DATABASE.m
 
 ## License
 
-Academic project for CITS3403 Agile Web Development at the University of Western Australia.
+Academic project for CITS5505 Agile Web Development at the University of Western Australia.

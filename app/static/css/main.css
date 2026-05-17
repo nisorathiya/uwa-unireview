@@ -123,20 +123,17 @@ a { color: inherit; text-decoration: none; }
 .ur-btn-danger:hover { background: #872525; }
 
 /* ─── Toast notifications ───────────────────────────────────── */
-/* A single reusable toast component used by both server-side flash()
-   calls and client-side showFlash() in flash.js. Floats over content
-   so it never fights for layout space. */
 .ur-toast-container {
   position: fixed;
-  top: 76px;                /* sits just below the 56px sticky navbar */
+  top: 76px;                
   right: 20px;
-  z-index: 1000;            /* above modals and sticky elements */
+  z-index: 1000;            
   display: flex;
   flex-direction: column;
   gap: 10px;
   max-width: 360px;
-  width: calc(100% - 40px); /* respects 20px gutters on small screens */
-  pointer-events: none;     /* container ignores clicks; children opt in */
+  width: calc(100% - 40px); 
+  pointer-events: none;     
 }
 
 .ur-toast {

@@ -1,4 +1,14 @@
-/* ─── unit.js ────────────────────────────────────────────────── */
+/**
+ * unit.js — interactivity for the unit detail page.
+ *
+ * Handles:
+ *   - Review form: validation, toggle, edit pre-fill
+ *   - Delete review confirm modal
+ *   - Vote (upvote/downvote) AJAX with active-state toggle
+ *   - Save/unsave unit AJAX with toast feedback
+ *   - Rating distribution Chart.js bar chart
+ */
+
 $(document).ready(function () {
     /* Validate review form before submission — replaces HTML5
        required/minlength so we can show our own toast instead of

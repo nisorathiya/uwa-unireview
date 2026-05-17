@@ -1,4 +1,11 @@
-/* ─── login.js ───────────────────────────────────────────────── */
+/**
+ * login.js — interactivity for the login / sign-up page.
+ *
+ * Handles:
+ *   - Tab switching between Log in and Sign up forms
+ *   - Password strength indicator (weak / fair / strong)
+ *   - Confirm-password match validation
+ */
 
 $(document).ready(function () {
   /* ── Tab switching ─────────────────────────────────────── */
